@@ -3,378 +3,203 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ШИНСЕРВИС — CRM для шиномонтажа</title>
+<title>ШИНСЕРВИС — Личный кабинет</title>
 <style>
 :root{
-  --bg:#eef2f7; --card:#fff; --ink:#16202c; --muted:#7c8a99;
+  --bg:#0f1720; --card:#fff; --ink:#16202c; --muted:#7c8a99;
   --line:#e3e9f0; --accent:#ff6b1a; --dark:#1f2a37;
   --ok:#16a34a; --warn:#f59e0b; --danger:#e11d48; --blue:#2563eb;
-  --radius:14px;
+  --radius:16px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
+body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;background:#eef2f7;color:var(--ink);font-size:14.5px;line-height:1.5;-webkit-font-smoothing:antialiased}
 button,input,select,textarea{font-family:inherit;font-size:14px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
 
-/* ---------- TOPBAR ---------- */
-.topbar{display:flex;align-items:center;gap:14px;padding:12px 20px;background:var(--dark);color:#fff}
-.brand{font-weight:800;letter-spacing:.5px;display:flex;align-items:center;gap:10px;font-size:15px}
-.brand .logo{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--accent);font-size:15px}
-.brand small{opacity:.55;font-weight:600;letter-spacing:2px}
-.spacer{flex:1}
+/* HEADER */
+.header{background:var(--dark);color:#fff;padding:0 22px;display:flex;align-items:center;gap:16px;height:64px;position:sticky;top:0;z-index:20;box-shadow:0 2px 20px rgba(10,20,35,.15)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.3px;font-size:16px;color:#fff}
+.logo .mark{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--accent);font-size:16px}
+.logo small{opacity:.55;font-weight:600;letter-spacing:2px;font-size:11px}
+.nav{display:flex;gap:4px;margin-left:22px}
+.nav button{background:transparent;border:0;color:#a9b6c5;padding:9px 14px;border-radius:9px;cursor:pointer;font-weight:600;transition:.15s}
+.nav button:hover{color:#fff;background:rgba(255,255,255,.08)}
+.nav button.active{color:#fff;background:rgba(255,107,26,.25)}
+.header .spacer{flex:1}
+.header .user{display:flex;align-items:center;gap:10px;font-weight:600;font-size:13.5px}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--accent);display:grid;place-items:center;color:#fff;font-weight:800;font-size:13px}
 
-/* ---------- TABS ---------- */
-.tabs{display:flex;gap:4px;padding:10px 20px 0;background:var(--dark);overflow-x:auto;scrollbar-width:none}
-.tabs::-webkit-scrollbar{display:none}
-.tab{background:transparent;border:0;color:#a9b6c5;padding:10px 16px;border-radius:10px 10px 0 0;cursor:pointer;font-weight:600;white-space:nowrap;transition:.15s}
-.tab:hover{color:#fff;background:rgba(255,255,255,.07)}
-.tab.active{background:var(--bg);color:var(--ink)}
+main{padding:26px 22px;max-width:1180px;margin:0 auto}
+.page{display:none;animation:fade .2s ease}
+.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
-main{padding:20px;max-width:1440px;margin:0 auto}
-.tabpage{display:none;animation:fade .18s ease}
-.tabpage.active{display:block}
-@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+/* HERO */
+.hero{background:linear-gradient(135deg,#1f2a37 0%,#2d3a4b 60%,#3d4d61 100%);color:#fff;border-radius:22px;padding:44px 38px;margin-bottom:26px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;right:-60px;top:-60px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,26,.35),transparent 70%)}
+.hero h1{font-size:32px;font-weight:800;line-height:1.2;max-width:640px;position:relative;z-index:1}
+.hero p{opacity:.8;margin-top:12px;max-width:560px;position:relative;z-index:1}
+.hero .cta{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap;position:relative;z-index:1}
 
-/* ---------- PAGE HEAD ---------- */
-.page-head{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
-.page-head h2{font-size:20px;font-weight:700}
-.page-head .sub{color:var(--muted);font-size:13px}
-.page-head .spacer{flex:1}
-
-/* ---------- CARD ---------- */
-.card{background:var(--card);border-radius:var(--radius);box-shadow:0 1px 3px rgba(20,35,55,.06),0 8px 24px -16px rgba(20,35,55,.2);padding:16px;margin-bottom:16px}
-.card h3{font-size:15px;margin-bottom:12px;font-weight:700}
-.card-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.card-head h3{margin:0}
-.card-head .spacer{flex:1}
-
-/* ---------- BUTTONS ---------- */
-.btn{border:1px solid var(--line);background:#fff;color:var(--ink);padding:8px 14px;border-radius:10px;cursor:pointer;font-weight:600;transition:.15s;white-space:nowrap}
-.btn:hover{background:#f6f8fb;border-color:#cfd8e3}
+/* BUTTONS */
+.btn{border:1px solid var(--line);background:#fff;color:var(--ink);padding:10px 18px;border-radius:11px;cursor:pointer;font-weight:600;transition:.15s;white-space:nowrap}
+.btn:hover{background:#f6f8fb;border-color:#cfd8e3;transform:translateY(-1px)}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
 .btn.primary:hover{background:#e85c0d}
+.btn.ghost{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:#fff}
+.btn.ghost:hover{background:rgba(255,255,255,.2)}
 .btn.dark{background:var(--dark);border-color:var(--dark);color:#fff}
-.btn.dark:hover{background:#0f1720}
+.btn.sm{padding:6px 12px;font-size:12.5px;border-radius:9px}
 .btn.danger{color:var(--danger);border-color:#f4ccd6}
 .btn.danger:hover{background:#fff1f4}
-.btn.sm{padding:5px 10px;font-size:12.5px;border-radius:8px}
-.btn.ghost{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:#fff}
-.btn.ghost:hover{background:rgba(255,255,255,.16)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
 
-/* ---------- TABLES ---------- */
+/* CARDS */
+.card{background:var(--card);border-radius:var(--radius);box-shadow:0 1px 3px rgba(20,35,55,.06),0 14px 32px -22px rgba(20,35,55,.25);padding:22px;margin-bottom:18px}
+.card h3{font-size:16px;font-weight:700;margin-bottom:14px}
+.card-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.card-head h3{margin:0}
+.card-head .spacer{flex:1}
+.grid3{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+
+/* SERVICE CARD */
+.svc{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;transition:.2s;display:flex;flex-direction:column;gap:8px}
+.svc:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 12px 24px -16px rgba(255,107,26,.4)}
+.svc .name{font-weight:700;font-size:14.5px;line-height:1.35;min-height:38px}
+.svc .price{font-size:20px;font-weight:800;color:var(--accent);margin-top:auto}
+.svc .unit{font-size:12px;color:var(--muted);font-weight:600}
+.svc .type{font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:3px 9px;border-radius:999px;align-self:flex-start}
+.t-service{background:#e8f0ff;color:#1d4ed8}
+.t-good{background:#fff5e2;color:#a16207}
+
+/* TABLE */
 .table-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--line)}
 table{width:100%;border-collapse:collapse;background:#fff;min-width:520px}
-th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);padding:10px 12px;background:#f7f9fc;border-bottom:1px solid var(--line);font-weight:700;white-space:nowrap}
-td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);padding:11px 14px;background:#f7f9fc;border-bottom:1px solid var(--line);font-weight:700;white-space:nowrap}
+td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
 tr:last-child td{border-bottom:0}
 tbody tr:hover{background:#fafcff}
-td.actions{text-align:right;white-space:nowrap}
-td.actions .btn{margin-left:4px}
-.muted{color:var(--muted);font-size:12.5px}
 .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.muted{color:var(--muted);font-size:12.5px}
 
-/* ---------- BADGES ---------- */
-.badge{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11.5px;font-weight:700;letter-spacing:.2px}
+/* BADGES */
+.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:700;letter-spacing:.2px}
 .b-ok{background:#e7f7ee;color:#0f7a3d}
 .b-warn{background:#fff5e2;color:#a16207}
 .b-bad{background:#ffe9ef;color:#b01238}
 .b-info{background:#e8f0ff;color:#1d4ed8}
 .b-gray{background:#eef2f7;color:#5b6b7c}
 
-/* ---------- FORM ---------- */
-.form{display:flex;flex-direction:column;gap:12px}
-label{display:flex;flex-direction:column;gap:5px;font-size:12.5px;font-weight:600;color:#54627a}
-input,select,textarea{padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);outline:none;transition:.15s;width:100%}
+/* FORMS */
+label{display:flex;flex-direction:column;gap:6px;font-size:12.5px;font-weight:600;color:#54627a}
+input,select,textarea{padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);outline:none;transition:.15s;width:100%}
 input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,107,26,.13)}
-input:disabled{background:#f4f6fa;color:var(--muted)}
 textarea{resize:vertical}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.row>*{flex:0 0 auto}
-.row .grow{flex:1 1 160px}
+.form{display:flex;flex-direction:column;gap:14px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 
-/* ---------- KPI ---------- */
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:16px}
-.kpi{background:#fff;border-radius:var(--radius);padding:16px;box-shadow:0 1px 3px rgba(20,35,55,.06),0 8px 24px -18px rgba(20,35,55,.25);border-left:4px solid var(--accent)}
-.kpi .lbl{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:18px}
+.kpi{background:#fff;border-radius:14px;padding:18px;box-shadow:0 1px 3px rgba(20,35,55,.06);border-left:4px solid var(--accent)}
+.kpi .lbl{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
 .kpi .val{font-size:24px;font-weight:800;margin-top:6px;font-variant-numeric:tabular-nums}
 .kpi .hint{font-size:12px;color:var(--muted);margin-top:4px}
 .kpi.green{border-left-color:var(--ok)}
-.kpi.red{border-left-color:var(--danger)}
 .kpi.blue{border-left-color:var(--blue)}
 .kpi.gray{border-left-color:#94a3b8}
 
-/* ---------- MODAL ---------- */
-.overlay{position:fixed;inset:0;background:rgba(15,23,32,.55);backdrop-filter:blur(3px);display:none;align-items:flex-start;justify-content:center;padding:32px 16px;overflow-y:auto;z-index:50}
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(15,23,32,.55);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:22px;overflow-y:auto;z-index:100}
 .overlay.open{display:flex}
-.modal{background:#fff;border-radius:18px;width:100%;max-width:620px;box-shadow:0 30px 60px -20px rgba(10,20,35,.5);animation:pop .18s ease}
-@keyframes pop{from{opacity:0;transform:translateY(-10px) scale(.98)}to{opacity:1;transform:none}}
-.modal-head{display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid var(--line)}
-.modal-head h3{font-size:16px}
+.modal{background:#fff;border-radius:20px;width:100%;max-width:520px;box-shadow:0 30px 60px -20px rgba(10,20,35,.5);animation:pop .2s ease}
+@keyframes pop{from{opacity:0;transform:scale(.96) translateY(-8px)}to{opacity:1;transform:none}}
+.modal-head{display:flex;align-items:center;padding:18px 22px;border-bottom:1px solid var(--line)}
+.modal-head h3{font-size:16px;font-weight:700}
 .modal-head .spacer{flex:1}
-.modal-head .x{border:0;background:#f2f5f9;width:32px;height:32px;border-radius:9px;cursor:pointer;font-size:16px;color:#5b6b7c}
+.modal-head .x{border:0;background:#f2f5f9;width:34px;height:34px;border-radius:10px;cursor:pointer;font-size:16px;color:#5b6b7c}
 .modal-head .x:hover{background:#e6ebf2}
-.modal-body{padding:20px;max-height:calc(100vh - 180px);overflow-y:auto}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:6px;padding-top:12px;border-top:1px solid var(--line)}
-.subhead{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-top:4px}
+.modal-body{padding:22px}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:8px;padding-top:14px;border-top:1px solid var(--line)}
 
-/* ---------- MISC ---------- */
+/* MISC */
 .empty{padding:34px 16px;text-align:center;color:var(--muted)}
-.empty .big{font-size:30px;opacity:.35;display:block;margin-bottom:8px}
-.list-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.empty .big{font-size:32px;opacity:.3;display:block;margin-bottom:8px}
+.list-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
 .list-item:last-child{border-bottom:0}
+.list-item .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:0 0 auto}
 .list-item .grow{flex:1;min-width:0}
 .list-item .t{font-weight:600}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex:0 0 auto}
-.filterbar{display:flex;gap:10px;align-items:end;flex-wrap:wrap;margin-bottom:14px}
-.filterbar label{min-width:150px}
-.hint{font-size:12px;color:var(--muted);margin-top:10px}
-code.mark{background:#f2f5f9;padding:2px 7px;border-radius:6px;font-family:ui-monospace,Consolas,monospace;font-size:12.5px;font-weight:700;color:#334}
-@media(max-width:640px){
-  .grid2,.grid3{grid-template-columns:1fr}
-  main{padding:14px}
-  .kpi .val{font-size:20px}
+.hint{font-size:12.5px;color:var(--muted);margin-top:10px}
+.pill{display:inline-block;background:#eef2f7;color:#5b6b7c;padding:5px 12px;border-radius:999px;font-size:12px;font-weight:700;margin:2px}
+
+@media(max-width:720px){
+  .header{padding:0 14px;gap:10px;flex-wrap:nowrap;overflow-x:auto}
+  .nav{margin-left:8px}
+  .nav button{padding:8px 10px;font-size:13px}
+  .hero{padding:28px 22px}
+  .hero h1{font-size:22px}
+  main{padding:16px 14px}
+  .grid2{grid-template-columns:1fr}
+  .user span.name{display:none}
 }
 </style>
 </head>
 <body>
 
-<header class="topbar">
-  <div class="brand"><span class="logo">◉</span> ШИНСЕРВИС <small>CRM</small></div>
+<header class="header">
+  <div class="logo"><span class="mark">◉</span> ШИНСЕРВИС <small>КЛИЕНТ</small></div>
+  <nav class="nav">
+    <button data-page="home" class="active">Услуги</button>
+    <button data-page="cabinet">Личный кабинет</button>
+    <button data-page="book">Записаться</button>
+  </nav>
   <div class="spacer"></div>
-  <button class="btn ghost sm" id="btnExport">Экспорт JSON</button>
-  <button class="btn ghost sm" id="btnReset">Сбросить данные</button>
+  <div id="userBox"></div>
 </header>
-
-<nav class="tabs">
-  <button class="tab active" data-tab="dash">Обзор</button>
-  <button class="tab" data-tab="clients">Клиенты</button>
-  <button class="tab" data-tab="nomen">Номенклатура</button>
-  <button class="tab" data-tab="stock">Склад</button>
-  <button class="tab" data-tab="storage">Хранение колёс</button>
-  <button class="tab" data-tab="orders">Бронь / Закупки</button>
-  <button class="tab" data-tab="finance">Фин. учёт</button>
-</nav>
 
 <main>
 
-  <!-- ============ ОБЗОР ============ -->
-  <section id="tab-dash" class="tabpage active">
-    <div class="page-head"><h2>Обзор</h2><span class="sub" id="dashDate"></span></div>
-    <div class="kpis" id="dashKpis"></div>
-    <div class="grid2" style="align-items:start">
-      <div class="card">
-        <div class="card-head"><h3>Последние услуги</h3></div>
-        <div id="dashVisits"></div>
-      </div>
-      <div class="card">
-        <div class="card-head"><h3>Активные брони</h3></div>
-        <div id="dashOrders"></div>
-      </div>
+<!-- ================= ГЛАВНАЯ ================= -->
+<section id="page-home" class="page active">
+  <div class="hero">
+    <h1>Профессиональный шиномонтаж и сезонное хранение колёс</h1>
+    <p>Работаем с R13 по R22. Балансировка, ремонт проколов, хранение комплектов в отапливаемом складе с маркировкой и учётом.</p>
+    <div class="cta">
+      <button class="btn primary" onclick="go('book')">Записаться онлайн</button>
+      <button class="btn ghost" onclick="go('home');document.getElementById('priceList').scrollIntoView({behavior:'smooth'})">Смотреть прайс</button>
     </div>
-    <div class="card">
-      <div class="card-head"><h3>Требуется внимание</h3></div>
-      <div id="dashAlerts"></div>
-    </div>
-  </section>
+  </div>
 
-  <!-- ============ КЛИЕНТЫ ============ -->
-  <section id="tab-clients" class="tabpage">
-    <div class="page-head">
-      <h2>Клиенты</h2>
-      <span class="sub" id="clientsSub"></span>
+  <div class="kpis" id="publicKpis"></div>
+
+  <div class="card" id="priceList">
+    <div class="card-head">
+      <h3>Прайс-лист</h3>
       <div class="spacer"></div>
-      <input id="clientSearch" placeholder="Поиск: имя, телефон, авто…" style="max-width:280px">
-      <button class="btn primary" onclick="addClient()">+ Клиент</button>
+      <input id="priceSearch" placeholder="Поиск услуги…" style="max-width:240px">
     </div>
-    <div class="table-wrap"><table>
-      <thead><tr>
-        <th>Клиент</th><th>Телефон</th><th class="num">Визитов</th><th class="num">Сумма</th><th>Последний визит</th><th></th>
-      </tr></thead>
-      <tbody id="clientsBody"></tbody>
-    </table></div>
-  </section>
+    <div class="grid3" id="priceGrid"></div>
+  </div>
+</section>
 
-  <!-- ============ НОМЕНКЛАТУРА ============ -->
-  <section id="tab-nomen" class="tabpage">
-    <div class="page-head">
-      <h2>Номенклатура услуг и товаров</h2>
-      <span class="sub">Прайс-лист</span>
-      <div class="spacer"></div>
-      <button class="btn primary" onclick="addService()">+ Позиция</button>
-    </div>
-    <div class="card">
-      <div class="card-head">
-        <h3>Прайс-лист</h3>
-        <div class="spacer"></div>
-        <span class="badge b-info" id="nomenCount"></span>
-      </div>
-      <div class="table-wrap"><table>
-        <thead><tr>
-          <th>Наименование</th><th>Тип</th><th>Ед.</th><th class="num">Цена</th><th></th>
-        </tr></thead>
-        <tbody id="nomenBody"></tbody>
-      </table></div>
-    </div>
-  </section>
+<!-- ================= ЛИЧНЫЙ КАБИНЕТ ================= -->
+<section id="page-cabinet" class="page">
+  <div id="cabinetContent"></div>
+</section>
 
-  <!-- ============ СКЛАД ============ -->
-  <section id="tab-stock" class="tabpage">
-    <div class="page-head">
-      <h2>Склад ТМЦ</h2>
-      <span class="sub">Остатки · приход / расход</span>
-      <div class="spacer"></div>
-      <button class="btn" onclick="addWhItem()">+ Позиция склада</button>
-      <button class="btn primary" onclick="addMove('in')">Приход</button>
-      <button class="btn dark" onclick="addMove('out')">Расход</button>
-    </div>
-    <div class="kpis" id="stockKpis"></div>
-    <div class="card">
-      <div class="card-head"><h3>Остатки на складе</h3></div>
-      <div class="table-wrap"><table>
-        <thead><tr>
-          <th>Позиция</th><th>Ед.</th><th class="num">Остаток</th><th class="num">Мин.</th><th>Статус</th><th></th>
-        </tr></thead>
-        <tbody id="stockBody"></tbody>
-      </table></div>
-    </div>
-    <div class="card">
-      <div class="card-head">
-        <h3>Движение ТМЦ</h3>
-        <div class="spacer"></div>
-        <select id="moveFilter" style="max-width:200px">
-          <option value="">Все движения</option>
-          <option value="in">Только приход</option>
-          <option value="out">Только расход</option>
-        </select>
-      </div>
-      <div class="table-wrap"><table>
-        <thead><tr>
-          <th>Дата</th><th>Позиция</th><th>Тип</th><th class="num">Кол-во</th><th>Комментарий</th><th></th>
-        </tr></thead>
-        <tbody id="movesBody"></tbody>
-      </table></div>
-    </div>
-  </section>
-
-  <!-- ============ ХРАНЕНИЕ КОЛЁС ============ -->
-  <section id="tab-storage" class="tabpage">
-    <div class="page-head">
-      <h2>Хранение колёс</h2>
-      <span class="sub">Маркировка · ячейка · клиент</span>
-      <div class="spacer"></div>
-      <button class="btn primary" onclick="addStorage()">+ Принять на хранение</button>
-    </div>
-    <div class="kpis" id="storageKpis"></div>
-    <div class="card">
-      <div class="card-head">
-        <h3>Журнал хранения</h3>
-        <div class="spacer"></div>
-        <input id="storageSearch" placeholder="Поиск: маркировка, клиент, ячейка…" style="max-width:260px">
-        <select id="storageFilter" style="max-width:180px">
-          <option value="">Все</option>
-          <option value="Хранится">На хранении</option>
-          <option value="Выдано">Выдано</option>
-        </select>
-      </div>
-      <div class="table-wrap"><table>
-        <thead><tr>
-          <th>Маркировка</th><th>Клиент</th><th>Комплект</th><th>Ячейка</th><th>Сезон</th><th>Принято</th><th>Выдано</th><th>Статус</th><th></th>
-        </tr></thead>
-        <tbody id="storageBody"></tbody>
-      </table></div>
-    </div>
-  </section>
-
-  <!-- ============ БРОНЬ / ЗАКУПКИ ============ -->
-  <section id="tab-orders" class="tabpage">
-    <div class="page-head">
-      <h2>Бронь / закупленные товары</h2>
-      <span class="sub">Связь: клиент ↔ склад</span>
-      <div class="spacer"></div>
-      <button class="btn primary" onclick="addOrder()">+ Бронь / закупка</button>
-    </div>
-    <div class="kpis" id="ordersKpis"></div>
-    <div class="card">
-      <div class="card-head">
-        <h3>Список заказов</h3>
-        <div class="spacer"></div>
-        <select id="orderFilter" style="max-width:200px">
-          <option value="">Все статусы</option>
-          <option>Бронь</option>
-          <option>Закуплено</option>
-          <option>Выдан</option>
-        </select>
-      </div>
-      <div class="table-wrap"><table>
-        <thead><tr>
-          <th>Дата</th><th>Клиент</th><th>Позиции</th><th class="num">Сумма</th><th class="num">Предоплата</th><th>Статус</th><th></th>
-        </tr></thead>
-        <tbody id="ordersBody"></tbody>
-      </table></div>
-    </div>
-  </section>
-
-  <!-- ============ ФИН УЧЁТ ============ -->
-  <section id="tab-finance" class="tabpage">
-    <div class="page-head">
-      <h2>Финансовый учёт</h2>
-      <span class="sub">Выручка · расходы · итог</span>
-      <div class="spacer"></div>
-      <button class="btn dark" onclick="addExpense()">+ Расход</button>
-    </div>
-
-    <div class="card">
-      <div class="filterbar">
-        <label>Период с<input type="date" id="finFrom"></label>
-        <label>по<input type="date" id="finTo"></label>
-        <button class="btn" onclick="setPeriod('month')">Текущий месяц</button>
-        <button class="btn" onclick="setPeriod('prev')">Прошлый месяц</button>
-        <button class="btn" onclick="setPeriod('year')">Год</button>
-      </div>
-    </div>
-
-    <div class="kpis" id="finKpis"></div>
-
-    <div class="grid2" style="align-items:start">
-      <div class="card">
-        <div class="card-head"><h3>Структура выручки</h3></div>
-        <div id="finRevenue"></div>
-      </div>
-      <div class="card">
-        <div class="card-head"><h3>Структура расходов</h3></div>
-        <div id="finExpenseStruct"></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-head">
-        <h3>Расходы за период</h3>
-        <div class="spacer"></div>
-        <span class="badge b-gray" id="finExpCount"></span>
-      </div>
-      <div class="table-wrap"><table>
-        <thead><tr>
-          <th>Дата</th><th>Категория</th><th>Комментарий</th><th class="num">Сумма</th><th></th>
-        </tr></thead>
-        <tbody id="finExpBody"></tbody>
-      </table></div>
-    </div>
-
-    <div class="card">
-      <div class="card-head"><h3>Детализация выручки</h3></div>
-      <div class="table-wrap"><table>
-        <thead><tr>
-          <th>Дата</th><th>Источник</th><th>Клиент</th><th>Описание</th><th class="num">Сумма</th>
-        </tr></thead>
-        <tbody id="finRevBody"></tbody>
-      </table></div>
-    </div>
-  </section>
+<!-- ================= ЗАПИСЬ ================= -->
+<section id="page-book" class="page">
+  <div class="card">
+    <h3>Запись на услугу</h3>
+    <p class="muted" style="margin-bottom:16px">Оставьте заявку — мы свяжемся для подтверждения времени.</p>
+    <div id="bookContent"></div>
+  </div>
+</section>
 
 </main>
 
-<!-- ============ MODAL ============ -->
+<!-- МОДАЛКА -->
 <div class="overlay" id="overlay">
   <div class="modal">
     <div class="modal-head">
@@ -387,10 +212,8 @@ code.mark{background:#f2f5f9;padding:2px 7px;border-radius:6px;font-family:ui-mo
 </div>
 
 <script>
-/* ==========================================================
-   ХЕЛПЕРЫ
-   ========================================================== */
-const $  = s => document.querySelector(s);
+/* ================= HELPERS ================= */
+const $ = s => document.querySelector(s);
 const $$ = s => Array.from(document.querySelectorAll(s));
 const uid = () => Math.random().toString(36).slice(2,8) + Date.now().toString(36).slice(-4);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
@@ -398,23 +221,23 @@ const money = n => (Math.round((Number(n)||0)*100)/100).toLocaleString('ru-RU') 
 const num = n => (Number(n)||0).toLocaleString('ru-RU');
 const today = () => { const d = new Date(); return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10); };
 const fmtDate = d => d ? d.split('-').reverse().join('.') : '—';
+const hash = s => { let h=0; for(let i=0;i<s.length;i++){h=(h<<5)-h+s.charCodeAt(i);h|=0;} return 'h'+Math.abs(h).toString(36); };
+const empty = t => `<div class="empty"><span class="big">◌</span>${esc(t)}</div>`;
 
-/* ==========================================================
-   ДАННЫЕ / ХРАНИЛИЩЕ
-   ========================================================== */
+/* ================= DB ================= */
 const KEY = 'tireCRM_v1';
 let db = null;
+let session = null; // {userId, clientId}
 
-function freshDB(){
-  return { clients:[], services:[], warehouse:[], moves:[], storage:[], orders:[], visits:[], expenses:[] };
-}
+function freshDB(){ return { clients:[], services:[], warehouse:[], moves:[], storage:[], orders:[], visits:[], expenses:[], users:[] }; }
 function saveDB(){ localStorage.setItem(KEY, JSON.stringify(db)); }
+
 function loadDB(){
   try{
     const raw = localStorage.getItem(KEY);
-    if(raw){ db = Object.assign(freshDB(), JSON.parse(raw)); return; }
-  }catch(e){}
-  db = freshDB(); seed(); saveDB();
+    if(raw){ db = Object.assign(freshDB(), JSON.parse(raw)); }
+    else { db = freshDB(); seed(); saveDB(); }
+  }catch(e){ db = freshDB(); seed(); saveDB(); }
 }
 
 function seed(){
@@ -429,948 +252,328 @@ function seed(){
     S('Подкачка азотом (1 колесо)','service','шт',100),
     S('Вентиль резиновый','good','шт',50),
     S('Грузик балансировочный','good','шт',15),
-    S('Герметик шинный','good','шт',450),
-    S('Секретки колёсные (компл.)','good','компл',900)
+    S('Герметик шинный','good','шт',450)
   ];
-
-  // Складские позиции создаём из товаров
-  db.warehouse = db.services.filter(s => s.type === 'good').map(g => ({
-    id: uid(), nomId: g.id, qty: Math.floor(Math.random()*40)+8, min: 10
-  }));
-
-  const c1 = {id:uid(), name:'Иванов Иван Сергеевич', phone:'+7 900 111-22-33', car:'Toyota Camry · А123ВС77', note:'Постоянный клиент'};
-  const c2 = {id:uid(), name:'Петрова Анна', phone:'+7 900 222-33-44', car:'Kia Rio · В456ЕК50', note:''};
-  const c3 = {id:uid(), name:'ООО «ТрансЛогистик»', phone:'+7 495 700-10-10', car:'Автопарк Газель (6 ед.)', note:'Корпоративный клиент, оплата по счёту'};
-  db.clients = [c1, c2, c3];
-
-  const sid = n => db.services[n].id;
-  const dAgo = k => { const d = new Date(); d.setDate(d.getDate()-k); return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10); };
-
-  db.visits = [
-    {id:uid(), clientId:c1.id, date:dAgo(2),  serviceId:sid(4), qty:1, price:1600, sum:1600, comment:'Переобувка на лето'},
-    {id:uid(), clientId:c1.id, date:dAgo(2),  serviceId:sid(2), qty:4, price:150,  sum:600,  comment:'Балансировка'},
-    {id:uid(), clientId:c2.id, date:dAgo(5),  serviceId:sid(0), qty:2, price:250,  sum:500,  comment:'Прокол переднего'},
-    {id:uid(), clientId:c3.id, date:dAgo(8),  serviceId:sid(1), qty:6, price:400,  sum:2400, comment:'Парк, R17'},
-    {id:uid(), clientId:c3.id, date:dAgo(8),  serviceId:sid(2), qty:6, price:150,  sum:900,  comment:''},
-    {id:uid(), clientId:c1.id, date:dAgo(20), serviceId:sid(5), qty:1, price:3000, sum:3000, comment:'Сезонное хранение'}
-  ];
-
-  db.storage = [
-    {id:uid(), mark:'ХР-0001', clientId:c1.id, setDesc:'4 шт · R16 · литьё + шины', location:'Стеллаж A-3', season:'Лето', dateIn:dAgo(20), dateOut:'', status:'Хранится', note:''},
-    {id:uid(), mark:'ХР-0002', clientId:c2.id, setDesc:'4 шт · R15 · штамп + шины', location:'Стеллаж B-1', season:'Зима', dateIn:dAgo(35), dateOut:'', status:'Хранится', note:''},
-    {id:uid(), mark:'ХР-0003', clientId:c3.id, setDesc:'24 шт · R17 · штамп', location:'Паллета C-2', season:'Зима', dateIn:dAgo(60), dateOut:dAgo(10), status:'Выдано', note:'Выдано по доверенности'}
-  ];
-
-  db.orders = [
-    {id:uid(), date:dAgo(1), clientId:c2.id, status:'Бронь', prepay:500, comment:'Ждём поставку',
-     items:[{nomId:sid(10), qty:1, price:900}]},
-    {id:uid(), date:dAgo(6), clientId:c3.id, status:'Закуплено', prepay:0, comment:'Счёт №112',
-     items:[{nomId:sid(8), qty:50, price:15},{nomId:sid(9), qty:4, price:450}]}
-  ];
-
-  db.moves = [
-    {id:uid(), date:dAgo(15), whId:db.warehouse[0].id, type:'in', qty:30, comment:'Поставка от «ШинТорг»'},
-    {id:uid(), date:dAgo(9),  whId:db.warehouse[1].id, type:'in', qty:100, comment:'Поставка грузиков'},
-    {id:uid(), date:dAgo(3),  whId:db.warehouse[0].id, type:'out', qty:4, comment:'Продажа'}
-  ];
-  // Применяем движения к остаткам поверх сгенерированных
-  db.moves.forEach(m => {
-    const w = db.warehouse.find(x => x.id === m.whId);
-    if(w) w.qty += (m.type === 'in' ? m.qty : -m.qty);
-  });
-
-  db.expenses = [
-    {id:uid(), date:dAgo(25), category:'Аренда', sum:45000, comment:'Помещение, бокс 2'},
-    {id:uid(), date:dAgo(20), category:'Зарплата', sum:70000, comment:'Аванс, 3 сотрудника'},
-    {id:uid(), date:dAgo(12), category:'Закупка товара', sum:18500, comment:'Грузики, вентили'},
-    {id:uid(), date:dAgo(5),  category:'Налоги', sum:12000, comment:'УСН'},
-    {id:uid(), date:dAgo(2),  category:'Прочее', sum:3200, comment:'Расходники, бытовуха'}
-  ];
+  db.warehouse = db.services.filter(s => s.type === 'good').map(g => ({ id:uid(), nomId:g.id, qty:20, min:5 }));
+  db.users = [{ id:uid(), login:'admin', password:hash('admin123'), role:'admin' }];
+  // демо-клиент с аккаунтом
+  const c = {id:uid(), name:'Иванов Иван', phone:'+7 900 111-22-33', car:'Toyota Camry · А123ВС77', note:''};
+  db.clients.push(c);
+  db.users.push({ id:uid(), login:'ivanov', password:hash('12345'), role:'client', clientId:c.id });
 }
 
-/* ==========================================================
-   СПРАВОЧНИКИ
-   ========================================================== */
-const clientById = id => db.clients.find(c => c.id === id);
-const clientName = id => clientById(id)?.name || '—';
-const serviceById = id => db.services.find(s => s.id === id);
-const whById = id => db.warehouse.find(w => w.id === id);
-const whName = w => serviceById(w?.nomId)?.name || '—';
-const whUnit = w => serviceById(w?.nomId)?.unit || 'шт';
-const goods = () => db.services.filter(s => s.type === 'good');
-const orderSum = o => o.items.reduce((a,i) => a + i.qty * i.price, 0);
+/* ================= NAV ================= */
+function go(page){
+  $$('.page').forEach(p => p.classList.remove('active'));
+  $('#page-' + page).classList.add('active');
+  $$('.nav button').forEach(b => b.classList.toggle('active', b.dataset.page === page));
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(page === 'cabinet') renderCabinet();
+  if(page === 'book') renderBook();
+}
+$$('.nav button').forEach(b => b.addEventListener('click', () => go(b.dataset.page)));
 
-/* ==========================================================
-   МОДАЛКА
-   ========================================================== */
+/* ================= AUTH UI ================= */
+function renderUserBox(){
+  const box = $('#userBox');
+  if(!session){
+    box.innerHTML = `<button class="btn ghost sm" onclick="openAuth()">Войти / Регистрация</button>`;
+  } else {
+    const u = db.users.find(x => x.id === session.userId);
+    const name = u?.role === 'admin' ? 'Администратор' : (clientById(u?.clientId)?.name || u.login);
+    const ini = (name[0] || '?').toUpperCase();
+    box.innerHTML = `
+      <div class="user">
+        <div class="avatar">${esc(ini)}</div>
+        <span class="name">${esc(name)}</span>
+        <button class="btn ghost sm" onclick="logout()">Выйти</button>
+      </div>`;
+  }
+}
+
+function openAuth(mode = 'login'){
+  const isLogin = mode === 'login';
+  openModal(isLogin ? 'Вход в личный кабинет' : 'Регистрация', `
+    <form id="authForm" class="form">
+      ${!isLogin ? `<label>Ваше имя<input name="name" required placeholder="Иванов Иван"></label>
+        <div class="grid2">
+          <label>Телефон<input name="phone" placeholder="+7 900 000-00-00"></label>
+          <label>Автомобиль<input name="car" placeholder="Марка · номер"></label>
+        </div>` : ''}
+      <label>Логин<input name="login" required autocomplete="username"></label>
+      <label>Пароль<input type="password" name="password" required autocomplete="current-password"></label>
+      <div class="modal-actions" style="justify-content:space-between">
+        <button type="button" class="btn sm" onclick="${isLogin ? "openAuth('register')" : "openAuth('login')"}">
+          ${isLogin ? 'Нет аккаунта? Регистрация' : 'Уже есть аккаунт? Войти'}
+        </button>
+        <div style="display:flex;gap:8px">
+          <button type="button" class="btn" onclick="closeModal()">Отмена</button>
+          <button class="btn primary" type="submit">${isLogin ? 'Войти' : 'Зарегистрироваться'}</button>
+        </div>
+      </div>
+    </form>
+    ${isLogin ? `<div class="hint">Демо-доступ клиента: <b>ivanov / 12345</b></div>` : ''}
+  `);
+
+  $('#authForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const f = new FormData(e.target);
+    const login = f.get('login').trim();
+    const password = f.get('password');
+
+    if(isLogin){
+      const u = db.users.find(x => x.login === login && x.password === hash(password));
+      if(!u){ alert('Неверный логин или пароль'); return; }
+      session = { userId: u.id, clientId: u.clientId || null };
+    } else {
+      if(db.users.some(x => x.login === login)){ alert('Такой логин уже занят'); return; }
+      const client = { id:uid(), name:f.get('name').trim(), phone:f.get('phone').trim(), car:f.get('car').trim(), note:'' };
+      db.clients.push(client);
+      const user = { id:uid(), login, password:hash(password), role:'client', clientId:client.id };
+      db.users.push(user);
+      session = { userId: user.id, clientId: client.id };
+    }
+    saveDB(); closeModal(); renderUserBox(); go('cabinet');
+  });
+}
+
+function logout(){ session = null; renderUserBox(); go('home'); }
+
+function clientById(id){ return db.clients.find(c => c.id === id); }
+function serviceById(id){ return db.services.find(s => s.id === id); }
+function clientName(id){ return clientById(id)?.name || '—'; }
+
+/* ================= MODAL ================= */
 function openModal(title, html){
   $('#modalTitle').textContent = title;
   $('#modalBody').innerHTML = html;
   $('#overlay').classList.add('open');
 }
-function closeModal(){ $('#overlay').classList.remove('open'); $('#modalBody').innerHTML = ''; }
+function closeModal(){ $('#overlay').classList.remove('open'); }
 $('#overlay').addEventListener('click', e => { if(e.target.id === 'overlay') closeModal(); });
 document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
 
-/* ==========================================================
-   НАВИГАЦИЯ
-   ========================================================== */
-$$('.tab').forEach(t => t.addEventListener('click', () => {
-  $$('.tab').forEach(x => x.classList.remove('active'));
-  $$('.tabpage').forEach(x => x.classList.remove('active'));
-  t.classList.add('active');
-  $('#tab-' + t.dataset.tab).classList.add('active');
-  renderAll();
-}));
+/* ================= ГЛАВНАЯ ================= */
+function renderPublic(){
+  const services = db.services.filter(s => s.type === 'service').length;
+  const goods = db.services.filter(s => s.type === 'good').length;
+  const sets = db.storage.filter(s => s.status === 'Хранится').length;
 
-/* ==========================================================
-   ОБЩИЙ РЕНДЕР
-   ========================================================== */
-function renderAll(){
-  renderDash();
-  renderClients();
-  renderNomen();
-  renderStock();
-  renderStorage();
-  renderOrders();
-  renderFinance();
-}
-
-/* ==========================================================
-   ОБЗОР
-   ========================================================== */
-function renderDash(){
-  const m = today().slice(0,7);
-  const monthVisits = db.visits.filter(v => v.date.startsWith(m));
-  const revMonth = monthVisits.reduce((a,v) => a + v.sum, 0);
-  const activeStorage = db.storage.filter(s => s.status === 'Хранится').length;
-  const lowStock = db.warehouse.filter(w => w.qty <= w.min).length;
-  const openOrders = db.orders.filter(o => o.status !== 'Выдан').length;
-
-  $('#dashDate').textContent = 'на ' + fmtDate(today());
-
-  $('#dashKpis').innerHTML = `
-    <div class="kpi green"><div class="lbl">Выручка за месяц</div><div class="val">${money(revMonth)}</div><div class="hint">${monthVisits.length} операций</div></div>
-    <div class="kpi blue"><div class="lbl">Клиентов в базе</div><div class="val">${db.clients.length}</div><div class="hint">${db.visits.length} визитов всего</div></div>
-    <div class="kpi"><div class="lbl">Колёс на хранении</div><div class="val">${activeStorage}</div><div class="hint">комплектов на складе</div></div>
-    <div class="kpi gray"><div class="lbl">Открытых броней</div><div class="val">${openOrders}</div><div class="hint">ожидают выдачи</div></div>
-    <div class="kpi ${lowStock ? 'red' : 'green'}"><div class="lbl">Низкий остаток</div><div class="val">${lowStock}</div><div class="hint">позиций ниже минимума</div></div>
+  $('#publicKpis').innerHTML = `
+    <div class="kpi blue"><div class="lbl">Услуг в прайсе</div><div class="val">${services}</div></div>
+    <div class="kpi"><div class="lbl">Товаров в наличии</div><div class="val">${goods}</div></div>
+    <div class="kpi green"><div class="lbl">Комплектов на хранении</div><div class="val">${sets}</div></div>
+    <div class="kpi gray"><div class="lbl">График работы</div><div class="val" style="font-size:15px;margin-top:10px">Пн–Вс · 9:00–21:00</div></div>
   `;
 
-  const last = [...db.visits].sort((a,b) => b.date.localeCompare(a.date)).slice(0,6);
-  $('#dashVisits').innerHTML = last.length ? last.map(v => `
-    <div class="list-item">
-      <span class="dot"></span>
-      <div class="grow">
-        <div class="t">${esc(clientName(v.clientId))}</div>
-        <div class="muted">${esc(serviceById(v.serviceId)?.name || '—')} · ${fmtDate(v.date)}</div>
-      </div>
-      <strong>${money(v.sum)}</strong>
-    </div>`).join('') : emptyBlock('Пока нет оказанных услуг');
+  const q = ($('#priceSearch').value || '').toLowerCase().trim();
+  const list = db.services.filter(s => !q || s.name.toLowerCase().includes(q));
 
-  const open = db.orders.filter(o => o.status !== 'Выдан').slice(0,6);
-  $('#dashOrders').innerHTML = open.length ? open.map(o => `
-    <div class="list-item">
-      <div class="grow">
-        <div class="t">${esc(clientName(o.clientId))}</div>
-        <div class="muted">${o.items.length} поз. · ${fmtDate(o.date)}</div>
-      </div>
-      <span class="badge ${o.status === 'Бронь' ? 'b-warn' : 'b-info'}">${o.status}</span>
-      <strong>${money(orderSum(o))}</strong>
-    </div>`).join('') : emptyBlock('Активных броней нет');
-
-  const alerts = [];
-  db.warehouse.filter(w => w.qty <= w.min).forEach(w => {
-    alerts.push(`<div class="list-item"><span class="badge b-bad">Склад</span><div class="grow"><div class="t">${esc(whName(w))}</div><div class="muted">Остаток ${num(w.qty)} ${whUnit(w)} — ниже минимума (${num(w.min)})</div></div><button class="btn sm" onclick="addMove('in','${w.id}')">Приход</button></div>`);
-  });
-  const overdue = db.storage.filter(s => s.status === 'Хранится' && daysBetween(s.dateIn, today()) > 180);
-  overdue.forEach(s => {
-    alerts.push(`<div class="list-item"><span class="badge b-warn">Хранение</span><div class="grow"><div class="t">${esc(s.mark)} — ${esc(clientName(s.clientId))}</div><div class="muted">Хранится более 180 дней (с ${fmtDate(s.dateIn)})</div></div></div>`);
-  });
-  $('#dashAlerts').innerHTML = alerts.length ? alerts.join('') : emptyBlock('Всё в порядке 👍');
+  $('#priceGrid').innerHTML = list.length ? list.map(s => `
+    <div class="svc">
+      <span class="type ${s.type === 'service' ? 't-service' : 't-good'}">${s.type === 'service' ? 'Услуга' : 'Товар'}</span>
+      <div class="name">${esc(s.name)}</div>
+      <div class="price">${money(s.price)}<span class="unit"> / ${esc(s.unit)}</span></div>
+    </div>`).join('') : empty('Ничего не найдено');
 }
+$('#priceSearch')?.addEventListener('input', renderPublic);
 
-function daysBetween(a, b){
-  return Math.round((new Date(b) - new Date(a)) / 86400000);
-}
-function emptyBlock(text){
-  return `<div class="empty"><span class="big">◌</span>${esc(text)}</div>`;
-}
-
-/* ==========================================================
-   КЛИЕНТЫ
-   ========================================================== */
-function clientStats(id){
-  const vs = db.visits.filter(v => v.clientId === id);
-  const total = vs.reduce((a,v) => a + v.sum, 0);
-  const last = vs.length ? vs.map(v => v.date).sort().pop() : '';
-  return { count: vs.length, total, last };
-}
-
-function renderClients(){
-  const q = ($('#clientSearch').value || '').toLowerCase().trim();
-  const list = db.clients.filter(c =>
-    !q || [c.name, c.phone, c.car, c.note].join(' ').toLowerCase().includes(q)
-  );
-  $('#clientsSub').textContent = `${db.clients.length} записей`;
-
-  $('#clientsBody').innerHTML = list.length ? list.map(c => {
-    const st = clientStats(c.id);
-    return `<tr>
-      <td><strong>${esc(c.name)}</strong><div class="muted">${esc(c.car || '')}</div></td>
-      <td>${esc(c.phone || '—')}</td>
-      <td class="num">${st.count}</td>
-      <td class="num"><strong>${money(st.total)}</strong></td>
-      <td>${st.last ? fmtDate(st.last) : '—'}</td>
-      <td class="actions">
-        <button class="btn sm" onclick="openClient('${c.id}')">Карточка</button>
-        <button class="btn sm primary" onclick="addVisit('${c.id}')">+ Услуга</button>
-        <button class="btn sm danger" onclick="delClient('${c.id}')">✕</button>
-      </td>
-    </tr>`;
-  }).join('') : `<tr><td colspan="6">${emptyBlock('Клиенты не найдены')}</td></tr>`;
-}
-$('#clientSearch')?.addEventListener('input', renderClients);
-
-function addClient(){
-  openModal('Новый клиент', `
-    <form id="clientForm" class="form">
-      <label>ФИО / Название<input name="name" required placeholder="Иванов Иван"></label>
-      <div class="grid2">
-        <label>Телефон<input name="phone" placeholder="+7 ___ ___-__-__"></label>
-        <label>Автомобиль<input name="car" placeholder="Toyota Camry · А123ВС77"></label>
-      </div>
-      <label>Заметка<textarea name="note" rows="2" placeholder="Скидка, особенности…"></textarea></label>
-      <div class="modal-actions">
-        <button type="button" class="btn" onclick="closeModal()">Отмена</button>
-        <button class="btn primary" type="submit">Сохранить</button>
-      </div>
-    </form>`);
-  $('#clientForm').addEventListener('submit', e => {
-    e.preventDefault();
-    const f = new FormData(e.target);
-    db.clients.push({ id:uid(), name:f.get('name').trim(), phone:f.get('phone').trim(), car:f.get('car').trim(), note:f.get('note').trim() });
-    saveDB(); closeModal(); renderAll();
-  });
-}
-
-function delClient(id){
-  if(!confirm('Удалить клиента вместе с историей визитов?')) return;
-  db.clients = db.clients.filter(c => c.id !== id);
-  db.visits = db.visits.filter(v => v.clientId !== id);
-  db.storage.forEach(s => { if(s.clientId === id) s.clientId = ''; });
-  db.orders = db.orders.filter(o => o.clientId !== id);
-  saveDB(); renderAll();
-}
-
-function openClient(id){
-  const c = clientById(id); if(!c) return;
-  const st = clientStats(id);
-  const vs = db.visits.filter(v => v.clientId === id).sort((a,b) => b.date.localeCompare(a.date));
-  const stor = db.storage.filter(s => s.clientId === id);
-  const ords = db.orders.filter(o => o.clientId === id);
-
-  openModal('Карточка клиента', `
-    <div class="card" style="box-shadow:none;border:1px solid var(--line);margin-bottom:16px">
-      <div style="font-size:17px;font-weight:800">${esc(c.name)}</div>
-      <div class="muted" style="margin-top:4px">${esc(c.phone || '—')} · ${esc(c.car || '—')}</div>
-      ${c.note ? `<div class="muted" style="margin-top:6px">📝 ${esc(c.note)}</div>` : ''}
-      <div class="kpis" style="margin:14px 0 0">
-        <div class="kpi"><div class="lbl">Визитов</div><div class="val">${st.count}</div></div>
-        <div class="kpi green"><div class="lbl">Сумма</div><div class="val">${money(st.total)}</div></div>
-        <div class="kpi blue"><div class="lbl">Хранений</div><div class="val">${stor.filter(s=>s.status==='Хранится').length}</div></div>
-      </div>
-    </div>
-
-    <div class="subhead" style="margin-bottom:8px">История услуг</div>
-    <div class="table-wrap" style="margin-bottom:16px"><table>
-      <thead><tr><th>Дата</th><th>Услуга</th><th class="num">Кол-во</th><th class="num">Сумма</th><th></th></tr></thead>
-      <tbody>
-        ${vs.length ? vs.map(v => `<tr>
-          <td>${fmtDate(v.date)}</td>
-          <td>${esc(serviceById(v.serviceId)?.name || '—')}${v.comment ? `<div class="muted">${esc(v.comment)}</div>` : ''}</td>
-          <td class="num">${num(v.qty)}</td>
-          <td class="num">${money(v.sum)}</td>
-          <td class="actions"><button class="btn sm danger" onclick="delVisit('${v.id}','${c.id}')">✕</button></td>
-        </tr>`).join('') : `<tr><td colspan="5">${emptyBlock('Нет визитов')}</td></tr>`}
-      </tbody>
-    </table></div>
-
-    ${stor.length ? `
-    <div class="subhead" style="margin-bottom:8px">Хранение колёс</div>
-    <div class="table-wrap" style="margin-bottom:16px"><table>
-      <thead><tr><th>Маркировка</th><th>Комплект</th><th>Ячейка</th><th>Статус</th></tr></thead>
-      <tbody>${stor.map(s => `<tr>
-        <td><code class="mark">${esc(s.mark)}</code></td>
-        <td>${esc(s.setDesc)}</td>
-        <td>${esc(s.location)}</td>
-        <td><span class="badge ${s.status === 'Хранится' ? 'b-ok' : 'b-gray'}">${s.status}</span></td>
-      </tr>`).join('')}</tbody>
-    </table></div>` : ''}
-
-    ${ords.length ? `
-    <div class="subhead" style="margin-bottom:8px">Брони / закупки</div>
-    <div class="table-wrap"><table>
-      <thead><tr><th>Дата</th><th>Позиции</th><th class="num">Сумма</th><th>Статус</th></tr></thead>
-      <tbody>${ords.map(o => `<tr>
-        <td>${fmtDate(o.date)}</td>
-        <td class="muted">${o.items.map(i => esc(serviceById(i.nomId)?.name || '—')).join(', ')}</td>
-        <td class="num">${money(orderSum(o))}</td>
-        <td><span class="badge b-info">${o.status}</span></td>
-      </tr>`).join('')}</tbody>
-    </table></div>` : ''}
-
-    <div class="modal-actions">
-      <button class="btn" onclick="closeModal()">Закрыть</button>
-      <button class="btn primary" onclick="addVisit('${c.id}')">+ Добавить услугу</button>
-    </div>
-  `);
-}
-
-function addVisit(clientId){
-  if(!db.services.length){ alert('Сначала добавьте позиции в номенклатуру'); return; }
-  const opts = db.services.map(s => `<option value="${s.id}" data-price="${s.price}">${esc(s.name)} — ${money(s.price)}</option>`).join('');
-  openModal('Оказанная услуга', `
-    <form id="visitForm" class="form">
-      <label>Клиент<input value="${esc(clientName(clientId))}" disabled></label>
-      <div class="grid2">
-        <label>Дата<input type="date" name="date" value="${today()}" required></label>
-        <label>Количество<input type="number" name="qty" id="vQty" value="1" min="1" step="1" required></label>
-      </div>
-      <label>Услуга / товар<select name="serviceId" id="vService">${opts}</select></label>
-      <label>Сумма, ₽<input type="number" name="sum" id="vSum" step="0.01" required></label>
-      <label>Комментарий<textarea name="comment" rows="2"></textarea></label>
-      <div class="modal-actions">
-        <button type="button" class="btn" onclick="closeModal()">Отмена</button>
-        <button class="btn primary" type="submit">Провести</button>
-      </div>
-    </form>`);
-
-  const sync = () => {
-    const o = $('#vService').selectedOptions[0];
-    $('#vSum').value = Math.round((Number(o?.dataset.price || 0)) * (Number($('#vQty').value) || 1));
-  };
-  $('#vService').addEventListener('change', sync);
-  $('#vQty').addEventListener('input', sync);
-  sync();
-
-  $('#visitForm').addEventListener('submit', e => {
-    e.preventDefault();
-    const f = new FormData(e.target);
-    const svcId = f.get('serviceId');
-    const svc = serviceById(svcId);
-    const qty = Number(f.get('qty'));
-    const date = f.get('date');
-    const sum = Number(f.get('sum'));
-
-    db.visits.push({ id:uid(), clientId, date, serviceId:svcId, qty, price:sum/qty, sum, comment:f.get('comment').trim() });
-
-    // если продан товар — списываем со склада
-    if(svc.type === 'good'){
-      const w = db.warehouse.find(x => x.nomId === svcId);
-      if(w){
-        w.qty -= qty;
-        db.moves.push({ id:uid(), date, whId:w.id, type:'out', qty, comment:'Продажа: ' + clientName(clientId) });
-      }
-    }
-    saveDB(); closeModal(); renderAll();
-  });
-}
-
-function delVisit(vid, clientId){
-  if(!confirm('Удалить запись об услуге?')) return;
-  db.visits = db.visits.filter(v => v.id !== vid);
-  saveDB(); openClient(clientId); renderAll();
-}
-
-/* ==========================================================
-   НОМЕНКЛАТУРА
-   ========================================================== */
-function renderNomen(){
-  $('#nomenCount').textContent = db.services.length + ' позиций';
-  $('#nomenBody').innerHTML = db.services.length ? db.services.map(s => `
-    <tr>
-      <td><strong>${esc(s.name)}</strong></td>
-      <td><span class="badge ${s.type === 'service' ? 'b-info' : 'b-warn'}">${s.type === 'service' ? 'Услуга' : 'Товар'}</span></td>
-      <td>${esc(s.unit)}</td>
-      <td class="num"><strong>${money(s.price)}</strong></td>
-      <td class="actions">
-        <button class="btn sm" onclick="editService('${s.id}')">Изменить</button>
-        <button class="btn sm danger" onclick="delService('${s.id}')">✕</button>
-      </td>
-    </tr>`).join('') : `<tr><td colspan="5">${emptyBlock('Прайс-лист пуст')}</td></tr>`;
-}
-
-function addService(){ serviceForm(null); }
-function editService(id){ serviceForm(serviceById(id)); }
-
-function serviceForm(s){
-  openModal(s ? 'Редактировать позицию' : 'Новая позиция прайса', `
-    <form id="svcForm" class="form">
-      <label>Наименование<input name="name" required value="${esc(s?.name || '')}" placeholder="Шиномонтаж R13–R15"></label>
-      <div class="grid3">
-        <label>Тип<select name="type">
-          <option value="service" ${s?.type === 'service' ? 'selected' : ''}>Услуга</option>
-          <option value="good" ${s?.type === 'good' ? 'selected' : ''}>Товар</option>
-        </select></label>
-        <label>Ед. изм.<input name="unit" value="${esc(s?.unit || 'шт')}"></label>
-        <label>Цена, ₽<input type="number" name="price" step="0.01" min="0" required value="${s?.price ?? ''}"></label>
-      </div>
-      <div class="modal-actions">
-        <button type="button" class="btn" onclick="closeModal()">Отмена</button>
-        <button class="btn primary" type="submit">Сохранить</button>
-      </div>
-    </form>`);
-  $('#svcForm').addEventListener('submit', e => {
-    e.preventDefault();
-    const f = new FormData(e.target);
-    const data = { name:f.get('name').trim(), type:f.get('type'), unit:f.get('unit').trim() || 'шт', price:Number(f.get('price')) };
-    if(s) Object.assign(s, data);
-    else db.services.push({ id:uid(), ...data });
-    saveDB(); closeModal(); renderAll();
-  });
-}
-
-function delService(id){
-  if(!confirm('Удалить позицию из прайс-листа?')) return;
-  db.services = db.services.filter(s => s.id !== id);
-  db.warehouse = db.warehouse.filter(w => w.nomId !== id);
-  saveDB(); renderAll();
-}
-
-/* ==========================================================
-   СКЛАД
-   ========================================================== */
-function renderStock(){
-  const low = db.warehouse.filter(w => w.qty <= w.min).length;
-  const totalQty = db.warehouse.reduce((a,w) => a + w.qty, 0);
-  $('#stockKpis').innerHTML = `
-    <div class="kpi blue"><div class="lbl">Позиций на складе</div><div class="val">${db.warehouse.length}</div></div>
-    <div class="kpi"><div class="lbl">Единиц ТМЦ</div><div class="val">${num(totalQty)}</div></div>
-    <div class="kpi ${low ? 'red' : 'green'}"><div class="lbl">Ниже минимума</div><div class="val">${low}</div></div>
-    <div class="kpi gray"><div class="lbl">Движений в журнале</div><div class="val">${db.moves.length}</div></div>
-  `;
-
-  $('#stockBody').innerHTML = db.warehouse.length ? db.warehouse.map(w => {
-    const low = w.qty <= w.min;
-    return `<tr>
-      <td><strong>${esc(whName(w))}</strong></td>
-      <td>${esc(whUnit(w))}</td>
-      <td class="num"><strong style="color:${low ? 'var(--danger)' : 'inherit'}">${num(w.qty)}</strong></td>
-      <td class="num muted">${num(w.min)}</td>
-      <td>${low ? '<span class="badge b-bad">Мало</span>' : '<span class="badge b-ok">Норма</span>'}</td>
-      <td class="actions">
-        <button class="btn sm" onclick="addMove('in','${w.id}')">+ Приход</button>
-        <button class="btn sm" onclick="addMove('out','${w.id}')">− Расход</button>
-        <button class="btn sm danger" onclick="delWhItem('${w.id}')">✕</button>
-      </td>
-    </tr>`;
-  }).join('') : `<tr><td colspan="6">${emptyBlock('Склад пуст — добавьте позиции из номенклатуры')}</td></tr>`;
-
-  const filter = $('#moveFilter').value;
-  const moves = [...db.moves].filter(m => !filter || m.type === filter).sort((a,b) => b.date.localeCompare(a.date));
-  $('#movesBody').innerHTML = moves.length ? moves.map(m => {
-    const w = whById(m.whId);
-    return `<tr>
-      <td>${fmtDate(m.date)}</td>
-      <td>${esc(whName(w))}</td>
-      <td>${m.type === 'in' ? '<span class="badge b-ok">Приход</span>' : '<span class="badge b-warn">Расход</span>'}</td>
-      <td class="num"><strong>${m.type === 'in' ? '+' : '−'}${num(m.qty)}</strong> ${esc(whUnit(w))}</td>
-      <td class="muted">${esc(m.comment || '')}</td>
-      <td class="actions"><button class="btn sm danger" onclick="delMove('${m.id}')">✕</button></td>
-    </tr>`;
-  }).join('') : `<tr><td colspan="6">${emptyBlock('Движений нет')}</td></tr>`;
-}
-$('#moveFilter')?.addEventListener('change', renderStock);
-
-function addWhItem(){
-  const available = goods().filter(g => !db.warehouse.some(w => w.nomId === g.id));
-  if(!goods().length){ alert('Сначала добавьте товары в «Номенклатуру» (тип — Товар).'); return; }
-  if(!available.length){ alert('Все товары из номенклатуры уже добавлены на склад.'); return; }
-  openModal('Новая позиция склада', `
-    <form id="whForm" class="form">
-      <label>Товар из номенклатуры<select name="nomId">
-        ${available.map(g => `<option value="${g.id}">${esc(g.name)} (${esc(g.unit)})</option>`).join('')}
-      </select></label>
-      <div class="grid2">
-        <label>Начальный остаток<input type="number" name="qty" value="0" step="0.01" min="0"></label>
-        <label>Минимальный остаток<input type="number" name="min" value="5" step="0.01" min="0"></label>
-      </div>
-      <div class="modal-actions">
-        <button type="button" class="btn" onclick="closeModal()">Отмена</button>
-        <button class="btn primary" type="submit">Добавить</button>
-      </div>
-    </form>`);
-  $('#whForm').addEventListener('submit', e => {
-    e.preventDefault();
-    const f = new FormData(e.target);
-    db.warehouse.push({ id:uid(), nomId:f.get('nomId'), qty:Number(f.get('qty')), min:Number(f.get('min')) });
-    saveDB(); closeModal(); renderAll();
-  });
-}
-
-function addMove(type, whId){
-  if(!db.warehouse.length){ alert('Склад пуст.'); return; }
-  const pre = whId || db.warehouse[0].id;
-  openModal(type === 'in' ? 'Приход ТМЦ' : 'Расход ТМЦ', `
-    <form id="moveForm" class="form">
-      <div class="grid2">
-        <label>Дата<input type="date" name="date" value="${today()}" required></label>
-        <label>Тип<select name="type">
-          <option value="in" ${type === 'in' ? 'selected' : ''}>Приход</option>
-          <option value="out" ${type === 'out' ? 'selected' : ''}>Расход</option>
-        </select></label>
-      </div>
-      <label>Позиция склада<select name="whId">
-        ${db.warehouse.map(w => `<option value="${w.id}" ${w.id === pre ? 'selected' : ''}>${esc(whName(w))} — остаток ${num(w.qty)} ${esc(whUnit(w))}</option>`).join('')}
-      </select></label>
-      <label>Количество<input type="number" name="qty" value="1" step="0.01" min="0.01" required></label>
-      <label>Комментарий<input name="comment" placeholder="Поставщик / причина списания"></label>
-      <div class="modal-actions">
-        <button type="button" class="btn" onclick="closeModal()">Отмена</button>
-        <button class="btn primary" type="submit">Провести</button>
-      </div>
-    </form>`);
-  $('#moveForm').addEventListener('submit', e => {
-    e.preventDefault();
-    const f = new FormData(e.target);
-    const w = whById(f.get('whId'));
-    const qty = Number(f.get('qty'));
-    const t = f.get('type');
-    if(t === 'out' && w.qty - qty < 0 && !confirm('Остаток уйдёт в минус. Продолжить?')) return;
-    w.qty += (t === 'in' ? qty : -qty);
-    db.moves.push({ id:uid(), date:f.get('date'), whId:w.id, type:t, qty, comment:f.get('comment').trim() });
-    saveDB(); closeModal(); renderAll();
-  });
-}
-
-function delMove(id){
-  if(!confirm('Удалить движение? Остаток будет скорректирован.')) return;
-  const m = db.moves.find(x => x.id === id);
-  const w = whById(m.whId);
-  if(w) w.qty -= (m.type === 'in' ? m.qty : -m.qty);
-  db.moves = db.moves.filter(x => x.id !== id);
-  saveDB(); renderAll();
-}
-
-function delWhItem(id){
-  if(!confirm('Удалить позицию склада вместе с её движениями?')) return;
-  db.warehouse = db.warehouse.filter(w => w.id !== id);
-  db.moves = db.moves.filter(m => m.whId !== id);
-  saveDB(); renderAll();
-}
-
-/* ==========================================================
-   ХРАНЕНИЕ КОЛЁС
-   ========================================================== */
-function renderStorage(){
-  const active = db.storage.filter(s => s.status === 'Хранится');
-  const totalSets = active.length;
-  const totalWheels = active.reduce((a,s) => a + (parseInt(s.setDesc) || 4), 0);
-  $('#storageKpis').innerHTML = `
-    <div class="kpi green"><div class="lbl">Комплектов на хранении</div><div class="val">${totalSets}</div></div>
-    <div class="kpi blue"><div class="lbl">Колёс на складе</div><div class="val">≈ ${totalWheels}</div></div>
-    <div class="kpi gray"><div class="lbl">Выдано всего</div><div class="val">${db.storage.filter(s => s.status === 'Выдано').length}</div></div>
-    <div class="kpi"><div class="lbl">Ячеек занято</div><div class="val">${new Set(active.map(s => s.location)).size}</div></div>
-  `;
-
-  const q = ($('#storageSearch').value || '').toLowerCase().trim();
-  const f = $('#storageFilter').value;
-  const list = db.storage.filter(s => {
-    if(f && s.status !== f) return false;
-    if(!q) return true;
-    return [s.mark, clientName(s.clientId), s.location, s.setDesc, s.season, s.note].join(' ').toLowerCase().includes(q);
-  }).sort((a,b) => b.dateIn.localeCompare(a.dateIn));
-
-  $('#storageBody').innerHTML = list.length ? list.map(s => `
-    <tr>
-      <td><code class="mark">${esc(s.mark)}</code></td>
-      <td><strong>${esc(clientName(s.clientId))}</strong></td>
-      <td>${esc(s.setDesc)}</td>
-      <td>${esc(s.location)}</td>
-      <td>${esc(s.season)}</td>
-      <td>${fmtDate(s.dateIn)}</td>
-      <td>${s.dateOut ? fmtDate(s.dateOut) : '—'}</td>
-      <td><span class="badge ${s.status === 'Хранится' ? 'b-ok' : 'b-gray'}">${s.status}</span></td>
-      <td class="actions">
-        ${s.status === 'Хранится' ? `<button class="btn sm primary" onclick="issueStorage('${s.id}')">Выдать</button>` : ''}
-        <button class="btn sm" onclick="editStorage('${s.id}')">Изм.</button>
-        <button class="btn sm danger" onclick="delStorage('${s.id}')">✕</button>
-      </td>
-    </tr>`).join('') : `<tr><td colspan="9">${emptyBlock('Записей хранения нет')}</td></tr>`;
-}
-$('#storageSearch')?.addEventListener('input', renderStorage);
-$('#storageFilter')?.addEventListener('change', renderStorage);
-
-function nextMark(){
-  const n = db.storage.length + 1;
-  let mark = 'ХР-' + String(n).padStart(4,'0');
-  let i = n;
-  while(db.storage.some(s => s.mark === mark)){ i++; mark = 'ХР-' + String(i).padStart(4,'0'); }
-  return mark;
-}
-
-function addStorage(){ storageForm(null); }
-function editStorage(id){ storageForm(db.storage.find(s => s.id === id)); }
-
-function storageForm(s){
-  if(!db.clients.length){ alert('Сначала добавьте клиента.'); return; }
-  openModal(s ? 'Редактировать хранение' : 'Принять колёса на хранение', `
-    <form id="stForm" class="form">
-      <div class="grid2">
-        <label>Маркировка<input name="mark" value="${esc(s?.mark || nextMark())}" required></label>
-        <label>Клиент<select name="clientId">
-          ${db.clients.map(c => `<option value="${c.id}" ${s?.clientId === c.id ? 'selected' : ''}>${esc(c.name)}</option>`).join('')}
-        </select></label>
-      </div>
-      <label>Состав комплекта<input name="setDesc" required value="${esc(s?.setDesc || '')}" placeholder="4 шт · R16 · литьё + шины"></label>
-      <div class="grid3">
-        <label>Ячейка / место<input name="location" required value="${esc(s?.location || '')}" placeholder="Стеллаж A-3"></label>
-        <label>Сезон<select name="season">
-          <option ${s?.season === 'Лето' ? 'selected' : ''}>Лето</option>
-          <option ${s?.season === 'Зима' ? 'selected' : ''}>Зима</option>
-          <option ${s?.season === 'Всесезон' ? 'selected' : ''}>Всесезон</option>
-        </select></label>
-        <label>Дата приёма<input type="date" name="dateIn" value="${s?.dateIn || today()}" required></label>
-      </div>
-      <label>Примечание<textarea name="note" rows="2">${esc(s?.note || '')}</textarea></label>
-      <div class="modal-actions">
-        <button type="button" class="btn" onclick="closeModal()">Отмена</button>
-        <button class="btn primary" type="submit">Сохранить</button>
-      </div>
-    </form>`);
-  $('#stForm').addEventListener('submit', e => {
-    e.preventDefault();
-    const f = new FormData(e.target);
-    const data = {
-      mark:f.get('mark').trim(), clientId:f.get('clientId'), setDesc:f.get('setDesc').trim(),
-      location:f.get('location').trim(), season:f.get('season'), dateIn:f.get('dateIn'), note:f.get('note').trim()
-    };
-    if(s) Object.assign(s, data);
-    else db.storage.push({ id:uid(), ...data, dateOut:'', status:'Хранится' });
-    saveDB(); closeModal(); renderAll();
-  });
-}
-
-function issueStorage(id){
-  const s = db.storage.find(x => x.id === id); if(!s) return;
-  if(!confirm(`Выдать комплект ${s.mark} клиенту «${clientName(s.clientId)}»?`)) return;
-  s.status = 'Выдано'; s.dateOut = today();
-  saveDB(); renderAll();
-}
-
-function delStorage(id){
-  if(!confirm('Удалить запись хранения?')) return;
-  db.storage = db.storage.filter(s => s.id !== id);
-  saveDB(); renderAll();
-}
-
-/* ==========================================================
-   БРОНЬ / ЗАКУПКИ
-   ========================================================== */
-function renderOrders(){
-  const total = db.orders.length;
-  const booked = db.orders.filter(o => o.status === 'Бронь').length;
-  const purchased = db.orders.filter(o => o.status === 'Закуплено').length;
-  const issued = db.orders.filter(o => o.status === 'Выдан');
-  $('#ordersKpis').innerHTML = `
-    <div class="kpi blue"><div class="lbl">Всего заказов</div><div class="val">${total}</div></div>
-    <div class="kpi"><div class="lbl">Бронь</div><div class="val">${booked}</div></div>
-    <div class="kpi gray"><div class="lbl">Закуплено (ожидает)</div><div class="val">${purchased}</div></div>
-    <div class="kpi green"><div class="lbl">Выдано на сумму</div><div class="val">${money(issued.reduce((a,o) => a + orderSum(o), 0))}</div></div>
-  `;
-
-  const f = $('#orderFilter').value;
-  const list = [...db.orders].filter(o => !f || o.status === f).sort((a,b) => b.date.localeCompare(a.date));
-  $('#ordersBody').innerHTML = list.length ? list.map(o => `
-    <tr>
-      <td>${fmtDate(o.date)}</td>
-      <td><strong>${esc(clientName(o.clientId))}</strong>${o.comment ? `<div class="muted">${esc(o.comment)}</div>` : ''}</td>
-      <td class="muted">${o.items.map(i => `${esc(serviceById(i.nomId)?.name || '—')} ×${num(i.qty)}`).join('<br>') || '—'}</td>
-      <td class="num"><strong>${money(orderSum(o))}</strong></td>
-      <td class="num">${money(o.prepay)}</td>
-      <td><span class="badge ${o.status === 'Бронь' ? 'b-warn' : o.status === 'Закуплено' ? 'b-info' : 'b-ok'}">${o.status}</span></td>
-      <td class="actions">
-        ${o.status !== 'Выдан' ? `<button class="btn sm primary" onclick="issueOrder('${o.id}')">Выдать</button>` : ''}
-        <button class="btn sm danger" onclick="delOrder('${o.id}')">✕</button>
-      </td>
-    </tr>`).join('') : `<tr><td colspan="7">${emptyBlock('Заказов нет')}</td></tr>`;
-}
-$('#orderFilter')?.addEventListener('change', renderOrders);
-
-let orderDraft = [];
-function addOrder(){
-  if(!db.clients.length){ alert('Сначала добавьте клиента.'); return; }
-  if(!goods().length){ alert('Нет товаров в номенклатуре.'); return; }
-  orderDraft = [];
-  openModal('Новая бронь / закупка', `
-    <form id="orderForm" class="form">
-      <div class="grid2">
-        <label>Клиент<select name="clientId">
-          ${db.clients.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join('')}
-        </select></label>
-        <label>Дата<input type="date" name="date" value="${today()}" required></label>
-      </div>
-      <div class="grid2">
-        <label>Статус<select name="status">
-          <option>Бронь</option><option>Закуплено</option><option>Выдан</option>
-        </select></label>
-        <label>Предоплата, ₽<input type="number" name="prepay" value="0" min="0" step="0.01"></label>
-      </div>
-
-      <div class="subhead">Позиции заказа</div>
-      <div id="orderItems"></div>
-      <div class="row">
-        <select id="oiGood" class="grow">
-          ${goods().map(g => `<option value="${g.id}" data-price="${g.price}">${esc(g.name)} — ${money(g.price)}</option>`).join('')}
-        </select>
-        <input type="number" id="oiQty" value="1" min="0.01" step="1" style="max-width:90px">
-        <button type="button" class="btn" onclick="addOrderItem()">+ Добавить</button>
-      </div>
-
-      <label>Комментарий<textarea name="comment" rows="2"></textarea></label>
-      <div class="modal-actions">
-        <button type="button" class="btn" onclick="closeModal()">Отмена</button>
-        <button class="btn primary" type="submit">Сохранить</button>
-      </div>
-    </form>`);
-  renderOrderDraft();
-
-  $('#orderForm').addEventListener('submit', e => {
-    e.preventDefault();
-    if(!orderDraft.length){ alert('Добавьте хотя бы одну позицию'); return; }
-    const f = new FormData(e.target);
-    const status = f.get('status');
-    const order = {
-      id:uid(), date:f.get('date'), clientId:f.get('clientId'), status,
-      prepay:Number(f.get('prepay')), comment:f.get('comment').trim(),
-      items: orderDraft.map(i => ({...i}))
-    };
-    if(status === 'Выдан') writeOffOrder(order, f.get('date'));
-    db.orders.push(order);
-    saveDB(); closeModal(); renderAll();
-  });
-}
-
-function renderOrderDraft(){
-  const box = $('#orderItems');
-  if(!box) return;
-  box.innerHTML = orderDraft.length ? `
-    <div class="table-wrap"><table>
-      <thead><tr><th>Товар</th><th class="num">Кол-во</th><th class="num">Цена</th><th class="num">Сумма</th><th></th></tr></thead>
-      <tbody>${orderDraft.map((i,idx) => `<tr>
-        <td>${esc(serviceById(i.nomId)?.name || '—')}</td>
-        <td class="num">${num(i.qty)}</td>
-        <td class="num">${money(i.price)}</td>
-        <td class="num"><strong>${money(i.qty * i.price)}</strong></td>
-        <td class="actions"><button type="button" class="btn sm danger" onclick="removeOrderItem(${idx})">✕</button></td>
-      </tr>`).join('')}</tbody>
-    </table></div>
-    <div class="hint">Итого: <strong>${money(orderDraft.reduce((a,i) => a + i.qty * i.price, 0))}</strong></div>
-  ` : `<div class="hint">Позиции не добавлены</div>`;
-}
-
-function addOrderItem(){
-  const sel = $('#oiGood');
-  const nomId = sel.value;
-  const price = Number(sel.selectedOptions[0].dataset.price);
-  const qty = Number($('#oiQty').value) || 1;
-  const exists = orderDraft.find(i => i.nomId === nomId);
-  if(exists) exists.qty += qty;
-  else orderDraft.push({ nomId, qty, price });
-  renderOrderDraft();
-}
-function removeOrderItem(idx){ orderDraft.splice(idx, 1); renderOrderDraft(); }
-
-function writeOffOrder(order, date){
-  order.items.forEach(i => {
-    const w = db.warehouse.find(x => x.nomId === i.nomId);
-    if(w){
-      w.qty -= i.qty;
-      db.moves.push({ id:uid(), date, whId:w.id, type:'out', qty:i.qty, comment:'Выдача по заказу: ' + clientName(order.clientId) });
-    }
-  });
-}
-
-function issueOrder(id){
-  const o = db.orders.find(x => x.id === id); if(!o) return;
-  if(!confirm('Оформить выдачу? Товары будут списаны со склада.')) return;
-  o.status = 'Выдан';
-  writeOffOrder(o, today());
-  saveDB(); renderAll();
-}
-
-function delOrder(id){
-  if(!confirm('Удалить заказ?')) return;
-  db.orders = db.orders.filter(o => o.id !== id);
-  saveDB(); renderAll();
-}
-
-/* ==========================================================
-   ФИНАНСОВЫЙ УЧЁТ
-   ========================================================== */
-function setPeriod(kind){
-  const now = new Date();
-  const iso = d => new Date(d.getTime() - d.getTimezoneOffset()*60000).toISOString().slice(0,10);
-  if(kind === 'month'){
-    $('#finFrom').value = iso(new Date(now.getFullYear(), now.getMonth(), 1));
-    $('#finTo').value = iso(now);
-  } else if(kind === 'prev'){
-    $('#finFrom').value = iso(new Date(now.getFullYear(), now.getMonth()-1, 1));
-    $('#finTo').value = iso(new Date(now.getFullYear(), now.getMonth(), 0));
-  } else {
-    $('#finFrom').value = iso(new Date(now.getFullYear(), 0, 1));
-    $('#finTo').value = iso(now);
+/* ================= КАБИНЕТ ================= */
+function renderCabinet(){
+  const box = $('#cabinetContent');
+  if(!session){
+    box.innerHTML = `<div class="card"><div class="empty"><span class="big">🔒</span>Войдите, чтобы увидеть личный кабинет<br><br><button class="btn primary" onclick="openAuth()">Войти / Регистрация</button></div></div>`;
+    return;
   }
-  renderFinance();
-}
-$('#finFrom')?.addEventListener('change', renderFinance);
-$('#finTo')?.addEventListener('change', renderFinance);
+  const u = db.users.find(x => x.id === session.userId);
+  if(u.role === 'admin'){
+    box.innerHTML = `<div class="card"><div class="empty"><span class="big">🛠</span>Это аккаунт администратора.<br><br><a class="btn primary" href="admin.html">Перейти в админ-панель →</a></div></div>`;
+    return;
+  }
 
-function inPeriod(d, from, to){
-  if(from && d < from) return false;
-  if(to && d > to) return false;
-  return true;
-}
+  const cid = session.clientId;
+  const c = clientById(cid);
+  const visits = db.visits.filter(v => v.clientId === cid).sort((a,b) => b.date.localeCompare(a.date));
+  const storage = db.storage.filter(s => s.clientId === cid);
+  const orders = db.orders.filter(o => o.clientId === cid).sort((a,b) => b.date.localeCompare(a.date));
+  const totalSpent = visits.reduce((a,v) => a + v.sum, 0);
 
-function renderFinance(){
-  const from = $('#finFrom').value, to = $('#finTo').value;
+  box.innerHTML = `
+    <div class="card">
+      <div class="card-head">
+        <div class="avatar" style="width:52px;height:52px;font-size:20px">${esc((c?.name || '?')[0].toUpperCase())}</div>
+        <div>
+          <h3 style="margin:0">${esc(c?.name || u.login)}</h3>
+          <div class="muted">${esc(c?.phone || '')} · ${esc(c?.car || '')}</div>
+        </div>
+        <div class="spacer"></div>
+        <button class="btn" onclick="openProfileEdit()">Редактировать профиль</button>
+      </div>
+    </div>
 
-  const visits = db.visits.filter(v => inPeriod(v.date, from, to));
-  const orders = db.orders.filter(o => o.status === 'Выдан' && inPeriod(o.date, from, to));
-  const expenses = db.expenses.filter(e => inPeriod(e.date, from, to)).sort((a,b) => b.date.localeCompare(a.date));
+    <div class="kpis">
+      <div class="kpi green"><div class="lbl">Всего визитов</div><div class="val">${visits.length}</div></div>
+      <div class="kpi blue"><div class="lbl">Потрачено</div><div class="val">${money(totalSpent)}</div></div>
+      <div class="kpi"><div class="lbl">Комплектов на хранении</div><div class="val">${storage.filter(s => s.status === 'Хранится').length}</div></div>
+      <div class="kpi gray"><div class="lbl">Заказов</div><div class="val">${orders.length}</div></div>
+    </div>
 
-  const revServices = visits.filter(v => serviceById(v.serviceId)?.type === 'service').reduce((a,v) => a + v.sum, 0);
-  const revGoods = visits.filter(v => serviceById(v.serviceId)?.type === 'good').reduce((a,v) => a + v.sum, 0)
-                 + orders.reduce((a,o) => a + orderSum(o), 0);
-  const revTotal = revServices + revGoods;
-  const expTotal = expenses.reduce((a,e) => a + e.sum, 0);
-  const profit = revTotal - expTotal;
-  const margin = revTotal ? (profit / revTotal * 100) : 0;
+    <div class="card">
+      <div class="card-head"><h3>История услуг</h3></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Дата</th><th>Услуга</th><th class="num">Кол-во</th><th class="num">Сумма</th></tr></thead>
+        <tbody>${visits.length ? visits.map(v => `
+          <tr>
+            <td>${fmtDate(v.date)}</td>
+            <td>${esc(serviceById(v.serviceId)?.name || '—')}${v.comment ? `<div class="muted">${esc(v.comment)}</div>` : ''}</td>
+            <td class="num">${num(v.qty)}</td>
+            <td class="num"><b>${money(v.sum)}</b></td>
+          </tr>`).join('') : `<tr><td colspan="4">${empty('Пока нет визитов')}</td></tr>`}
+        </tbody>
+      </table></div>
+    </div>
 
-  $('#finKpis').innerHTML = `
-    <div class="kpi green"><div class="lbl">Выручка</div><div class="val">${money(revTotal)}</div><div class="hint">${visits.length} услуг · ${orders.length} выдач</div></div>
-    <div class="kpi red"><div class="lbl">Расходы</div><div class="val">${money(expTotal)}</div><div class="hint">${expenses.length} операций</div></div>
-    <div class="kpi ${profit >= 0 ? 'green' : 'red'}"><div class="lbl">Финансовый итог</div><div class="val">${money(profit)}</div><div class="hint">рентабельность ${margin.toFixed(1)}%</div></div>
-    <div class="kpi blue"><div class="lbl">Средний чек</div><div class="val">${money(visits.length ? revTotal / visits.length : 0)}</div></div>
+    <div class="card">
+      <div class="card-head"><h3>Мои колёса на хранении</h3></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Маркировка</th><th>Комплект</th><th>Ячейка</th><th>Сезон</th><th>Принято</th><th>Статус</th></tr></thead>
+        <tbody>${storage.length ? storage.map(s => `
+          <tr>
+            <td><b>${esc(s.mark)}</b></td>
+            <td>${esc(s.setDesc)}</td>
+            <td>${esc(s.location)}</td>
+            <td>${esc(s.season)}</td>
+            <td>${fmtDate(s.dateIn)}</td>
+            <td><span class="badge ${s.status === 'Хранится' ? 'b-ok' : 'b-gray'}">${s.status}</span></td>
+          </tr>`).join('') : `<tr><td colspan="6">${empty('Нет комплектов на хранении')}</td></tr>`}
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h3>Мои заказы и заявки</h3></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Дата</th><th>Позиции</th><th class="num">Сумма</th><th>Статус</th></tr></thead>
+        <tbody>${orders.length ? orders.map(o => `
+          <tr>
+            <td>${fmtDate(o.date)}</td>
+            <td class="muted">${o.items.map(i => esc(serviceById(i.nomId)?.name || '—')).join(', ') || '—'}</td>
+            <td class="num"><b>${money(o.items.reduce((a,i) => a+i.qty*i.price, 0))}</b></td>
+            <td><span class="badge ${o.status === 'Заявка' ? 'b-warn' : o.status === 'Бронь' ? 'b-info' : o.status === 'Выдан' ? 'b-ok' : 'b-gray'}">${o.status}</span></td>
+          </tr>`).join('') : `<tr><td colspan="4">${empty('Заказов нет')}</td></tr>`}
+        </tbody>
+      </table></div>
+    </div>
   `;
-
-  // Структура выручки
-  const revRows = [
-    ['Услуги шиномонтажа', revServices, 'var(--blue)'],
-    ['Продажа товаров', revGoods, 'var(--accent)']
-  ];
-  const maxRev = Math.max(revTotal, 1);
-  $('#finRevenue').innerHTML = revRows.map(([label, val, color]) => `
-    <div style="margin-bottom:12px">
-      <div class="row" style="justify-content:space-between"><span class="muted">${label}</span><strong>${money(val)}</strong></div>
-      <div style="height:8px;background:#eef2f7;border-radius:99px;margin-top:6px;overflow:hidden">
-        <div style="height:100%;width:${(val/maxRev*100).toFixed(1)}%;background:${color};border-radius:99px"></div>
-      </div>
-    </div>`).join('') + `<div class="hint">Итого выручка за период: <strong>${money(revTotal)}</strong></div>`;
-
-  // Структура расходов
-  const byCat = {};
-  expenses.forEach(e => { byCat[e.category] = (byCat[e.category] || 0) + e.sum; });
-  const cats = Object.entries(byCat).sort((a,b) => b[1] - a[1]);
-  const maxExp = Math.max(expTotal, 1);
-  $('#finExpenseStruct').innerHTML = cats.length ? cats.map(([cat, val]) => `
-    <div style="margin-bottom:12px">
-      <div class="row" style="justify-content:space-between"><span class="muted">${esc(cat)}</span><strong>${money(val)}</strong></div>
-      <div style="height:8px;background:#eef2f7;border-radius:99px;margin-top:6px;overflow:hidden">
-        <div style="height:100%;width:${(val/maxExp*100).toFixed(1)}%;background:var(--danger);border-radius:99px"></div>
-      </div>
-    </div>`).join('') + `<div class="hint">Итого расходы: <strong>${money(expTotal)}</strong></div>`
-    : emptyBlock('Расходов за период нет');
-
-  $('#finExpCount').textContent = expenses.length + ' записей';
-  $('#finExpBody').innerHTML = expenses.length ? expenses.map(e => `
-    <tr>
-      <td>${fmtDate(e.date)}</td>
-      <td><span class="badge b-gray">${esc(e.category)}</span></td>
-      <td class="muted">${esc(e.comment || '')}</td>
-      <td class="num"><strong style="color:var(--danger)">−${money(e.sum)}</strong></td>
-      <td class="actions"><button class="btn sm danger" onclick="delExpense('${e.id}')">✕</button></td>
-    </tr>`).join('') : `<tr><td colspan="5">${emptyBlock('Расходов нет')}</td></tr>`;
-
-  // Детализация выручки
-  const revList = [
-    ...visits.map(v => ({ date:v.date, src: serviceById(v.serviceId)?.type === 'good' ? 'Товар' : 'Услуга', client: clientName(v.clientId), desc: serviceById(v.serviceId)?.name || '—', sum: v.sum })),
-    ...orders.map(o => ({ date:o.date, src:'Заказ', client: clientName(o.clientId), desc: o.items.map(i => serviceById(i.nomId)?.name || '').join(', '), sum: orderSum(o) }))
-  ].sort((a,b) => b.date.localeCompare(a.date));
-
-  $('#finRevBody').innerHTML = revList.length ? revList.map(r => `
-    <tr>
-      <td>${fmtDate(r.date)}</td>
-      <td><span class="badge ${r.src === 'Услуга' ? 'b-info' : r.src === 'Товар' ? 'b-warn' : 'b-ok'}">${r.src}</span></td>
-      <td>${esc(r.client)}</td>
-      <td class="muted">${esc(r.desc)}</td>
-      <td class="num"><strong style="color:var(--ok)">+${money(r.sum)}</strong></td>
-    </tr>`).join('') : `<tr><td colspan="5">${emptyBlock('Операций за период нет')}</td></tr>`;
 }
 
-function addExpense(){
-  openModal('Новый расход', `
-    <form id="expForm" class="form">
+function openProfileEdit(){
+  const c = clientById(session.clientId);
+  openModal('Редактировать профиль', `
+    <form id="profForm" class="form">
+      <label>ФИО<input name="name" required value="${esc(c.name)}"></label>
       <div class="grid2">
-        <label>Дата<input type="date" name="date" value="${today()}" required></label>
-        <label>Категория<select name="category">
-          <option>Зарплата</option>
-          <option>Налоги</option>
-          <option>Аренда</option>
-          <option>Закупка товара</option>
-          <option>Коммунальные</option>
-          <option>Реклама</option>
-          <option>Оборудование</option>
-          <option>Прочее</option>
-        </select></label>
+        <label>Телефон<input name="phone" value="${esc(c.phone || '')}"></label>
+        <label>Автомобиль<input name="car" value="${esc(c.car || '')}"></label>
       </div>
-      <label>Сумма, ₽<input type="number" name="sum" step="0.01" min="0.01" required></label>
-      <label>Комментарий<textarea name="comment" rows="2"></textarea></label>
+      <label>Заметка<textarea name="note" rows="2">${esc(c.note || '')}</textarea></label>
       <div class="modal-actions">
         <button type="button" class="btn" onclick="closeModal()">Отмена</button>
-        <button class="btn primary" type="submit">Добавить</button>
+        <button class="btn primary" type="submit">Сохранить</button>
       </div>
     </form>`);
-  $('#expForm').addEventListener('submit', e => {
+  $('#profForm').addEventListener('submit', e => {
     e.preventDefault();
     const f = new FormData(e.target);
-    db.expenses.push({ id:uid(), date:f.get('date'), category:f.get('category'), sum:Number(f.get('sum')), comment:f.get('comment').trim() });
-    saveDB(); closeModal(); renderAll();
+    Object.assign(c, {
+      name:f.get('name').trim(),
+      phone:f.get('phone').trim(),
+      car:f.get('car').trim(),
+      note:f.get('note').trim()
+    });
+    saveDB(); closeModal(); renderCabinet(); renderUserBox();
   });
 }
 
-function delExpense(id){
-  if(!confirm('Удалить расход?')) return;
-  db.expenses = db.expenses.filter(e => e.id !== id);
-  saveDB(); renderAll();
+/* ================= ЗАПИСЬ ================= */
+let bookItems = [];
+function renderBook(){
+  const box = $('#bookContent');
+  if(!session || db.users.find(x => x.id === session.userId)?.role !== 'client'){
+    box.innerHTML = `<div class="empty"><span class="big">🔒</span>Чтобы записаться, войдите в личный кабинет<br><br><button class="btn primary" onclick="openAuth()">Войти / Регистрация</button></div>`;
+    return;
+  }
+  const services = db.services.filter(s => s.type === 'service');
+  box.innerHTML = `
+    <form id="bookForm" class="form">
+      <div class="grid2">
+        <label>Дата<input type="date" name="date" value="${today()}" required></label>
+        <label>Удобное время<select name="time">
+          <option>09:00–11:00</option><option>11:00–13:00</option><option>13:00–15:00</option>
+          <option>15:00–17:00</option><option>17:00–19:00</option><option>19:00–21:00</option>
+        </select></label>
+      </div>
+      <label>Комментарий<textarea name="comment" rows="3" placeholder="Например: переобувка R16, есть литьё…"></textarea></label>
+
+      <div class="hint">Выберите услуги (можно несколько):</div>
+      <div id="bookChoices" style="display:flex;flex-direction:column;gap:8px;max-height:280px;overflow:auto;padding:4px">
+        ${services.map(s => `
+          <label style="flex-direction:row;align-items:center;gap:12px;padding:10px 14px;background:#f7f9fc;border:1px solid var(--line);border-radius:12px;font-weight:500;color:var(--ink);cursor:pointer">
+            <input type="checkbox" data-nomid="${s.id}" data-price="${s.price}" onchange="toggleBookItem(this)" style="width:auto">
+            <span style="flex:1">${esc(s.name)}</span>
+            <b style="color:var(--accent)">${money(s.price)}</b>
+          </label>`).join('')}
+      </div>
+
+      <div id="bookSummary" class="hint"></div>
+
+      <div class="modal-actions" style="justify-content:flex-end">
+        <button class="btn primary" type="submit">Отправить заявку</button>
+      </div>
+    </form>`;
+
+  $('#bookForm').addEventListener('submit', e => {
+    e.preventDefault();
+    if(!bookItems.length){ alert('Выберите хотя бы одну услугу'); return; }
+    const f = new FormData(e.target);
+    db.orders.push({
+      id:uid(),
+      date:f.get('date'),
+      time:f.get('time'),
+      clientId:session.clientId,
+      status:'Заявка',
+      prepay:0,
+      comment:f.get('comment').trim(),
+      items: bookItems.map(i => ({...i}))
+    });
+    saveDB();
+    bookItems = [];
+    alert('Заявка отправлена! Мы свяжемся с вами для подтверждения.');
+    go('cabinet');
+  });
+  renderBookSummary();
 }
 
-/* ==========================================================
-   ЭКСПОРТ / СБРОС
-   ========================================================== */
-$('#btnExport').addEventListener('click', () => {
-  const blob = new Blob([JSON.stringify(db, null, 2)], { type:'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'shinservice-backup-' + today() + '.json';
-  a.click();
-  URL.revokeObjectURL(a.href);
-});
+function toggleBookItem(el){
+  const nomId = el.dataset.nomid;
+  const price = Number(el.dataset.price);
+  if(el.checked) bookItems.push({ nomId, qty:1, price });
+  else bookItems = bookItems.filter(i => i.nomId !== nomId);
+  renderBookSummary();
+}
+function renderBookSummary(){
+  const box = $('#bookSummary');
+  if(!box) return;
+  const sum = bookItems.reduce((a,i) => a+i.qty*i.price, 0);
+  box.innerHTML = bookItems.length
+    ? `Выбрано: ${bookItems.length} · <b style="color:var(--accent)">${money(sum)}</b>`
+    : 'Ничего не выбрано';
+}
 
-$('#btnReset').addEventListener('click', () => {
-  if(!confirm('Полностью сбросить базу и загрузить демо-данные?')) return;
-  localStorage.removeItem(KEY);
-  loadDB();
-  renderAll();
-});
-
-/* ==========================================================
-   СТАРТ
-   ========================================================== */
+/* ================= INIT ================= */
 loadDB();
-setPeriod('month');
-renderAll();
+renderUserBox();
+renderPublic();
 </script>
 </body>
 </html>
