@@ -2,578 +2,1680 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ШИНСЕРВИС — Личный кабинет</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ШИНСЕРВИС</title>
 <style>
-:root{
-  --bg:#0f1720; --card:#fff; --ink:#16202c; --muted:#7c8a99;
-  --line:#e3e9f0; --accent:#ff6b1a; --dark:#1f2a37;
-  --ok:#16a34a; --warn:#f59e0b; --danger:#e11d48; --blue:#2563eb;
-  --radius:16px;
-}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;background:#eef2f7;color:var(--ink);font-size:14.5px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background:#eef2f7;color:#1a2331;font-size:14px;line-height:1.45}
 button,input,select,textarea{font-family:inherit;font-size:14px}
-a{color:var(--accent);text-decoration:none}
-a:hover{text-decoration:underline}
+a{color:#ff6b1a;text-decoration:none}
 
 /* HEADER */
-.header{background:var(--dark);color:#fff;padding:0 22px;display:flex;align-items:center;gap:16px;height:64px;position:sticky;top:0;z-index:20;box-shadow:0 2px 20px rgba(10,20,35,.15)}
-.logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.3px;font-size:16px;color:#fff}
-.logo .mark{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--accent);font-size:16px}
-.logo small{opacity:.55;font-weight:600;letter-spacing:2px;font-size:11px}
-.nav{display:flex;gap:4px;margin-left:22px}
-.nav button{background:transparent;border:0;color:#a9b6c5;padding:9px 14px;border-radius:9px;cursor:pointer;font-weight:600;transition:.15s}
-.nav button:hover{color:#fff;background:rgba(255,255,255,.08)}
-.nav button.active{color:#fff;background:rgba(255,107,26,.25)}
-.header .spacer{flex:1}
-.header .user{display:flex;align-items:center;gap:10px;font-weight:600;font-size:13.5px}
-.avatar{width:32px;height:32px;border-radius:50%;background:var(--accent);display:grid;place-items:center;color:#fff;font-weight:800;font-size:13px}
+.hdr{background:#1f2a37;color:#fff;padding:0 16px;display:flex;align-items:center;gap:12px;height:56px;flex-wrap:wrap;position:sticky;top:0;z-index:40}
+.hdr .brand{font-weight:800;font-size:15px;display:flex;align-items:center;gap:8px;letter-spacing:.3px}
+.hdr .brand .dot{width:28px;height:28px;border-radius:50%;background:#ff6b1a;display:grid;place-items:center;font-size:13px}
+.hdr .switcher{display:flex;background:rgba(255,255,255,.08);border-radius:9px;padding:3px}
+.hdr .switcher button{background:transparent;border:0;color:#a9b6c5;padding:6px 14px;border-radius:7px;cursor:pointer;font-weight:700;font-size:12.5px}
+.hdr .switcher button.on{background:#ff6b1a;color:#fff}
+.hdr .grow{flex:1}
+.hdr .who{display:flex;align-items:center;gap:8px;font-weight:600;font-size:13px}
+.hdr .avatar{width:28px;height:28px;border-radius:50%;background:#ff6b1a;display:grid;place-items:center;font-weight:800;font-size:12px}
 
-main{padding:26px 22px;max-width:1180px;margin:0 auto}
-.page{display:none;animation:fade .2s ease}
-.page.active{display:block}
-@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+/* LAYOUT */
+.tabs{display:flex;gap:2px;background:#1f2a37;padding:6px 16px 0;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{background:transparent;border:0;color:#a9b6c5;padding:9px 14px;border-radius:9px 9px 0 0;cursor:pointer;font-weight:600;font-size:13px;white-space:nowrap;position:relative}
+.tabs button:hover{color:#fff}
+.tabs button.on{background:#eef2f7;color:#1a2331}
+.tabs .dotbadge{position:absolute;top:3px;right:3px;background:#e11d48;color:#fff;font-size:9px;font-weight:800;padding:1px 5px;border-radius:99px}
 
-/* HERO */
-.hero{background:linear-gradient(135deg,#1f2a37 0%,#2d3a4b 60%,#3d4d61 100%);color:#fff;border-radius:22px;padding:44px 38px;margin-bottom:26px;position:relative;overflow:hidden}
-.hero::after{content:'';position:absolute;right:-60px;top:-60px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,26,.35),transparent 70%)}
-.hero h1{font-size:32px;font-weight:800;line-height:1.2;max-width:640px;position:relative;z-index:1}
-.hero p{opacity:.8;margin-top:12px;max-width:560px;position:relative;z-index:1}
-.hero .cta{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap;position:relative;z-index:1}
+main{padding:16px;max-width:1360px;margin:0 auto}
+.hide{display:none!important}
+.view{display:none}
+.view.on{display:block}
+
+/* CARD */
+.card{background:#fff;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(20,35,55,.06),0 8px 24px -18px rgba(20,35,55,.2)}
+.card h2{font-size:17px;font-weight:700;margin-bottom:12px}
+.card h3{font-size:15px;font-weight:700;margin-bottom:10px}
+.bar{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.bar .grow{flex:1}
 
 /* BUTTONS */
-.btn{border:1px solid var(--line);background:#fff;color:var(--ink);padding:10px 18px;border-radius:11px;cursor:pointer;font-weight:600;transition:.15s;white-space:nowrap}
-.btn:hover{background:#f6f8fb;border-color:#cfd8e3;transform:translateY(-1px)}
-.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
-.btn.primary:hover{background:#e85c0d}
-.btn.ghost{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:#fff}
-.btn.ghost:hover{background:rgba(255,255,255,.2)}
-.btn.dark{background:var(--dark);border-color:var(--dark);color:#fff}
-.btn.sm{padding:6px 12px;font-size:12.5px;border-radius:9px}
-.btn.danger{color:var(--danger);border-color:#f4ccd6}
-.btn.danger:hover{background:#fff1f4}
-.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn{border:1px solid #e3e9f0;background:#fff;color:#1a2331;padding:7px 13px;border-radius:9px;cursor:pointer;font-weight:600;font-size:13px;transition:.15s;white-space:nowrap}
+.btn:hover{background:#f6f8fb}
+.btn.pri{background:#ff6b1a;border-color:#ff6b1a;color:#fff}
+.btn.pri:hover{background:#e85c0d}
+.btn.dk{background:#1f2a37;border-color:#1f2a37;color:#fff}
+.btn.dk:hover{background:#0f1720}
+.btn.red{color:#e11d48;border-color:#f4ccd6}
+.btn.red:hover{background:#fff1f4}
+.btn.sm{padding:4px 9px;font-size:12px;border-radius:7px}
+.btn.gho{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:#fff}
+.btn.gho:hover{background:rgba(255,255,255,.2)}
 
-/* CARDS */
-.card{background:var(--card);border-radius:var(--radius);box-shadow:0 1px 3px rgba(20,35,55,.06),0 14px 32px -22px rgba(20,35,55,.25);padding:22px;margin-bottom:18px}
-.card h3{font-size:16px;font-weight:700;margin-bottom:14px}
-.card-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.card-head h3{margin:0}
-.card-head .spacer{flex:1}
-.grid3{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
-
-/* SERVICE CARD */
-.svc{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;transition:.2s;display:flex;flex-direction:column;gap:8px}
-.svc:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 12px 24px -16px rgba(255,107,26,.4)}
-.svc .name{font-weight:700;font-size:14.5px;line-height:1.35;min-height:38px}
-.svc .price{font-size:20px;font-weight:800;color:var(--accent);margin-top:auto}
-.svc .unit{font-size:12px;color:var(--muted);font-weight:600}
-.svc .type{font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:3px 9px;border-radius:999px;align-self:flex-start}
-.t-service{background:#e8f0ff;color:#1d4ed8}
-.t-good{background:#fff5e2;color:#a16207}
+/* INPUTS */
+.frm{display:flex;flex-direction:column;gap:10px}
+label{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:600;color:#54627a}
+input,select,textarea{padding:8px 10px;border:1px solid #e3e9f0;border-radius:9px;background:#fff;color:#1a2331;outline:none;width:100%}
+input:focus,select:focus,textarea:focus{border-color:#ff6b1a;box-shadow:0 0 0 3px rgba(255,107,26,.13)}
+textarea{resize:vertical}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 
 /* TABLE */
-.table-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--line)}
-table{width:100%;border-collapse:collapse;background:#fff;min-width:520px}
-th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);padding:11px 14px;background:#f7f9fc;border-bottom:1px solid var(--line);font-weight:700;white-space:nowrap}
-td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+.tw{overflow-x:auto;border-radius:11px;border:1px solid #e3e9f0}
+table{width:100%;border-collapse:collapse;background:#fff;min-width:480px}
+th{text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.4px;color:#7c8a99;padding:9px 11px;background:#f7f9fc;border-bottom:1px solid #e3e9f0;font-weight:700;white-space:nowrap}
+td{padding:9px 11px;border-bottom:1px solid #e3e9f0;vertical-align:middle}
 tr:last-child td{border-bottom:0}
 tbody tr:hover{background:#fafcff}
-.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-.muted{color:var(--muted);font-size:12.5px}
-
-/* BADGES */
-.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:700;letter-spacing:.2px}
-.b-ok{background:#e7f7ee;color:#0f7a3d}
-.b-warn{background:#fff5e2;color:#a16207}
-.b-bad{background:#ffe9ef;color:#b01238}
-.b-info{background:#e8f0ff;color:#1d4ed8}
-.b-gray{background:#eef2f7;color:#5b6b7c}
-
-/* FORMS */
-label{display:flex;flex-direction:column;gap:6px;font-size:12.5px;font-weight:600;color:#54627a}
-input,select,textarea{padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);outline:none;transition:.15s;width:100%}
-input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,107,26,.13)}
-textarea{resize:vertical}
-.form{display:flex;flex-direction:column;gap:14px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+td.act{text-align:right;white-space:nowrap}
+td.act .btn{margin-left:3px}
+.num{text-align:right;white-space:nowrap}
+.muted{color:#7c8a99;font-size:12.5px}
 
 /* KPI */
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:18px}
-.kpi{background:#fff;border-radius:14px;padding:18px;box-shadow:0 1px 3px rgba(20,35,55,.06);border-left:4px solid var(--accent)}
-.kpi .lbl{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
-.kpi .val{font-size:24px;font-weight:800;margin-top:6px;font-variant-numeric:tabular-nums}
-.kpi .hint{font-size:12px;color:var(--muted);margin-top:4px}
-.kpi.green{border-left-color:var(--ok)}
-.kpi.blue{border-left-color:var(--blue)}
-.kpi.gray{border-left-color:#94a3b8}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:14px}
+.kpi{background:#fff;border-radius:13px;padding:14px;box-shadow:0 1px 3px rgba(20,35,55,.06);border-left:4px solid #ff6b1a}
+.kpi .lbl{font-size:11.5px;color:#7c8a99;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.kpi .val{font-size:22px;font-weight:800;margin-top:5px}
+.kpi .hint{font-size:11.5px;color:#7c8a99;margin-top:3px}
+.kpi.gr{border-left-color:#16a34a}
+.kpi.rd{border-left-color:#e11d48}
+.kpi.bl{border-left-color:#2563eb}
+.kpi.gy{border-left-color:#94a3b8}
+
+/* BADGE */
+.bdg{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:700}
+.bd-gr{background:#e7f7ee;color:#0f7a3d}
+.bd-yl{background:#fff5e2;color:#a16207}
+.bd-rd{background:#ffe9ef;color:#b01238}
+.bd-bl{background:#e8f0ff;color:#1d4ed8}
+.bd-gy{background:#eef2f7;color:#5b6b7c}
 
 /* MODAL */
-.overlay{position:fixed;inset:0;background:rgba(15,23,32,.55);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:22px;overflow-y:auto;z-index:100}
-.overlay.open{display:flex}
-.modal{background:#fff;border-radius:20px;width:100%;max-width:520px;box-shadow:0 30px 60px -20px rgba(10,20,35,.5);animation:pop .2s ease}
-@keyframes pop{from{opacity:0;transform:scale(.96) translateY(-8px)}to{opacity:1;transform:none}}
-.modal-head{display:flex;align-items:center;padding:18px 22px;border-bottom:1px solid var(--line)}
-.modal-head h3{font-size:16px;font-weight:700}
-.modal-head .spacer{flex:1}
-.modal-head .x{border:0;background:#f2f5f9;width:34px;height:34px;border-radius:10px;cursor:pointer;font-size:16px;color:#5b6b7c}
-.modal-head .x:hover{background:#e6ebf2}
-.modal-body{padding:22px}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:8px;padding-top:14px;border-top:1px solid var(--line)}
+.ovl{position:fixed;inset:0;background:rgba(15,23,32,.55);display:none;align-items:flex-start;justify-content:center;padding:24px 12px;overflow-y:auto;z-index:70}
+.ovl.on{display:flex}
+.mdl{background:#fff;border-radius:16px;width:100%;max-width:580px;box-shadow:0 30px 60px -20px rgba(10,20,35,.5)}
+.mdl-h{display:flex;align-items:center;padding:14px 18px;border-bottom:1px solid #e3e9f0;gap:10px}
+.mdl-h h3{font-size:15px}
+.mdl-h .grow{flex:1}
+.mdl-h .x{border:0;background:#f2f5f9;width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:15px;color:#5b6b7c}
+.mdl-b{padding:18px;max-height:calc(100vh - 160px);overflow-y:auto}
+.mdl-f{display:flex;gap:7px;justify-content:flex-end;margin-top:8px;padding-top:12px;border-top:1px solid #e3e9f0}
 
-/* MISC */
-.empty{padding:34px 16px;text-align:center;color:var(--muted)}
-.empty .big{font-size:32px;opacity:.3;display:block;margin-bottom:8px}
-.list-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
-.list-item:last-child{border-bottom:0}
-.list-item .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:0 0 auto}
-.list-item .grow{flex:1;min-width:0}
-.list-item .t{font-weight:600}
-.hint{font-size:12.5px;color:var(--muted);margin-top:10px}
-.pill{display:inline-block;background:#eef2f7;color:#5b6b7c;padding:5px 12px;border-radius:999px;font-size:12px;font-weight:700;margin:2px}
+/* CLIENT */
+.hero{background:linear-gradient(135deg,#1f2a37 0%,#2d3a4b 60%,#3d4d61 100%);color:#fff;border-radius:18px;padding:30px 26px;margin-bottom:18px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,26,.35),transparent 70%)}
+.hero h1{font-size:24px;font-weight:800;line-height:1.25;max-width:600px;position:relative;z-index:1}
+.hero p{opacity:.85;margin-top:8px;max-width:520px;position:relative;z-index:1;font-size:13.5px}
+.hero .cta{margin-top:16px;position:relative;z-index:1}
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.svc{background:#fff;border:1px solid #e3e9f0;border-radius:12px;padding:13px;display:flex;flex-direction:column;gap:6px;transition:.15s}
+.svc:hover{border-color:#ff6b1a;transform:translateY(-2px)}
+.svc .tp{font-size:10.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:2px 8px;border-radius:99px;align-self:flex-start}
+.tp-s{background:#e8f0ff;color:#1d4ed8}
+.tp-g{background:#fff5e2;color:#a16207}
+.svc .nm{font-weight:700;font-size:14px;line-height:1.3;min-height:34px}
+.svc .pr{font-size:19px;font-weight:800;color:#ff6b1a;margin-top:auto}
+.svc .un{font-size:11.5px;color:#7c8a99;font-weight:600}
 
-@media(max-width:720px){
-  .header{padding:0 14px;gap:10px;flex-wrap:nowrap;overflow-x:auto}
-  .nav{margin-left:8px}
-  .nav button{padding:8px 10px;font-size:13px}
-  .hero{padding:28px 22px}
-  .hero h1{font-size:22px}
-  main{padding:16px 14px}
-  .grid2{grid-template-columns:1fr}
-  .user span.name{display:none}
+.empty{padding:30px 16px;text-align:center;color:#7c8a99}
+.empty .big{font-size:28px;opacity:.3;display:block;margin-bottom:6px}
+.li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #e3e9f0}
+.li:last-child{border-bottom:0}
+.li .d{width:8px;height:8px;border-radius:50%;background:#ff6b1a;flex:0 0 auto}
+.li .g{flex:1;min-width:0}
+.li .t{font-weight:600}
+.hint{font-size:12px;color:#7c8a99;margin-top:8px}
+code.mk{background:#f2f5f9;padding:2px 6px;border-radius:5px;font-family:ui-monospace,Consolas,monospace;font-size:12px;font-weight:700}
+.choice{display:flex;flex-direction:row;align-items:center;gap:10px;padding:9px 12px;background:#f7f9fc;border:1px solid #e3e9f0;border-radius:10px;font-weight:500;color:#1a2331;cursor:pointer}
+.choice input{width:auto}
+
+@media(max-width:640px){
+  .g2,.g3{grid-template-columns:1fr}
+  main{padding:12px}
+  .hero{padding:22px 18px}
+  .hero h1{font-size:20px}
 }
 </style>
 </head>
 <body>
 
-<header class="header">
-  <div class="logo"><span class="mark">◉</span> ШИНСЕРВИС <small>КЛИЕНТ</small></div>
-  <nav class="nav">
-    <button data-page="home" class="active">Услуги</button>
-    <button data-page="cabinet">Личный кабинет</button>
-    <button data-page="book">Записаться</button>
-  </nav>
-  <div class="spacer"></div>
-  <div id="userBox"></div>
-</header>
-
-<main>
-
-<!-- ================= ГЛАВНАЯ ================= -->
-<section id="page-home" class="page active">
-  <div class="hero">
-    <h1>Профессиональный шиномонтаж и сезонное хранение колёс</h1>
-    <p>Работаем с R13 по R22. Балансировка, ремонт проколов, хранение комплектов в отапливаемом складе с маркировкой и учётом.</p>
-    <div class="cta">
-      <button class="btn primary" onclick="go('book')">Записаться онлайн</button>
-      <button class="btn ghost" onclick="go('home');document.getElementById('priceList').scrollIntoView({behavior:'smooth'})">Смотреть прайс</button>
-    </div>
+<!-- ============ ШАПКА ============ -->
+<div class="hdr">
+  <div class="brand"><span class="dot">◉</span> ШИНСЕРВИС</div>
+  <div class="switcher">
+    <button id="btnClient" class="on">Клиент</button>
+    <button id="btnAdmin">Админ</button>
   </div>
+  <div class="grow"></div>
+  <div id="whoBox"></div>
+</div>
 
-  <div class="kpis" id="publicKpis"></div>
-
-  <div class="card" id="priceList">
-    <div class="card-head">
-      <h3>Прайс-лист</h3>
-      <div class="spacer"></div>
-      <input id="priceSearch" placeholder="Поиск услуги…" style="max-width:240px">
-    </div>
-    <div class="grid3" id="priceGrid"></div>
+<!-- ============================================================
+     КЛИЕНТСКАЯ ЧАСТЬ
+     ============================================================ -->
+<div id="clientPart">
+  <div class="tabs">
+    <button class="on" data-ct="home">Услуги</button>
+    <button data-ct="book">Записаться</button>
+    <button data-ct="cab">Личный кабинет</button>
   </div>
-</section>
+  <main>
+    <!-- Услуги -->
+    <section id="ct-home" class="view on">
+      <div class="hero">
+        <h1>Профессиональный шиномонтаж и сезонное хранение колёс</h1>
+        <p>Работаем с R13 по R22. Балансировка, ремонт проколов, хранение комплектов с маркировкой и учётом.</p>
+        <div class="cta"><button class="btn pri" onclick="switchClient('book')">Записаться онлайн</button></div>
+      </div>
+      <div class="kpis" id="pubKpis"></div>
+      <div class="card">
+        <div class="bar">
+          <h2 style="margin:0">Прайс-лист</h2>
+          <div class="grow"></div>
+          <input id="priceQ" placeholder="Поиск…" style="max-width:220px">
+        </div>
+        <div class="svc-grid" id="priceGrid"></div>
+      </div>
+    </section>
 
-<!-- ================= ЛИЧНЫЙ КАБИНЕТ ================= -->
-<section id="page-cabinet" class="page">
-  <div id="cabinetContent"></div>
-</section>
+    <!-- Запись -->
+    <section id="ct-book" class="view">
+      <div class="card">
+        <h2>Запись на услугу</h2>
+        <p class="muted" style="margin-bottom:14px">Оставьте заявку — администратор подтвердит время. Заявка сразу появится в админ-панели.</p>
+        <div id="bookBox"></div>
+      </div>
+    </section>
 
-<!-- ================= ЗАПИСЬ ================= -->
-<section id="page-book" class="page">
-  <div class="card">
-    <h3>Запись на услугу</h3>
-    <p class="muted" style="margin-bottom:16px">Оставьте заявку — мы свяжемся для подтверждения времени.</p>
-    <div id="bookContent"></div>
-  </div>
-</section>
+    <!-- Кабинет -->
+    <section id="ct-cab" class="view">
+      <div id="cabBox"></div>
+    </section>
+  </main>
+</div>
 
-</main>
-
-<!-- МОДАЛКА -->
-<div class="overlay" id="overlay">
-  <div class="modal">
-    <div class="modal-head">
-      <h3 id="modalTitle">Заголовок</h3>
-      <div class="spacer"></div>
-      <button class="x" onclick="closeModal()">✕</button>
+<!-- ============================================================
+     ЭКРАН ВХОДА В АДМИНКУ
+     ============================================================ -->
+<div id="adminGate" class="hide">
+  <main style="max-width:420px;margin-top:40px">
+    <div class="card">
+      <h2>🔒 Вход в админ-панель</h2>
+      <p class="muted" style="margin-bottom:14px">Только для сотрудников</p>
+      <form class="frm" onsubmit="doAdminLogin(event)">
+        <label>Логин<input id="admLogin" value="admin" required></label>
+        <label>Пароль<input id="admPass" type="password" value="admin123" required></label>
+        <button class="btn pri" type="submit">Войти</button>
+      </form>
+      <div class="hint">По умолчанию: <code class="mk">admin</code> / <code class="mk">admin123</code></div>
     </div>
-    <div class="modal-body" id="modalBody"></div>
+  </main>
+</div>
+
+<!-- ============================================================
+     АДМИН-ЧАСТЬ
+     ============================================================ -->
+<div id="adminPart" class="hide">
+  <div class="tabs" id="adminTabs">
+    <button class="on" data-at="dash">Обзор</button>
+    <button data-at="reqs">Заявки <span class="dotbadge hide" id="reqBadge"></span></button>
+    <button data-at="clients">Клиенты</button>
+    <button data-at="price">Прайс</button>
+    <button data-at="stock">Склад</button>
+    <button data-at="store">Хранение</button>
+    <button data-at="orders">Заказы</button>
+    <button data-at="fin">Финансы</button>
+    <button data-at="users">Доступы</button>
+  </div>
+  <main>
+    <section id="at-dash" class="view on">
+      <div class="kpis" id="dashKpis"></div>
+      <div class="g2">
+        <div class="card"><h3>Последние услуги</h3><div id="dashVisits"></div></div>
+        <div class="card"><h3>Активные заказы</h3><div id="dashOrders"></div></div>
+      </div>
+      <div class="card"><h3>Требуется внимание</h3><div id="dashAlerts"></div></div>
+    </section>
+
+    <section id="at-reqs" class="view">
+      <div class="card">
+        <div class="bar">
+          <h2 style="margin:0">Заявки с клиентского сайта</h2>
+          <div class="grow"></div>
+          <button class="btn sm" onclick="renderAdmin()">Обновить</button>
+        </div>
+        <div class="tw"><table>
+          <thead><tr><th>Дата</th><th>Клиент</th><th>Услуги</th><th>Время</th><th class="num">Сумма</th><th>Статус</th><th></th></tr></thead>
+          <tbody id="reqBody"></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <section id="at-clients" class="view">
+      <div class="card">
+        <div class="bar">
+          <h2 style="margin:0">Клиенты</h2>
+          <div class="grow"></div>
+          <input id="clientQ" placeholder="Поиск…" style="max-width:220px">
+          <button class="btn pri sm" onclick="addClient()">+ Клиент</button>
+        </div>
+        <div class="tw"><table>
+          <thead><tr><th>Клиент</th><th>Телефон</th><th>Логин</th><th class="num">Визитов</th><th class="num">Сумма</th><th></th></tr></thead>
+          <tbody id="clientsBody"></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <section id="at-price" class="view">
+      <div class="card">
+        <div class="bar">
+          <h2 style="margin:0">Прайс-лист</h2>
+          <div class="grow"></div>
+          <button class="btn pri sm" onclick="editService(null)">+ Позиция</button>
+        </div>
+        <div class="tw"><table>
+          <thead><tr><th>Наименование</th><th>Тип</th><th>Ед.</th><th class="num">Цена</th><th></th></tr></thead>
+          <tbody id="priceBody"></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <section id="at-stock" class="view">
+      <div class="card">
+        <div class="bar">
+          <h2 style="margin:0">Склад</h2>
+          <div class="grow"></div>
+          <button class="btn sm" onclick="addWhItem()">+ Позиция</button>
+          <button class="btn pri sm" onclick="addMove('in')">Приход</button>
+          <button class="btn dk sm" onclick="addMove('out')">Расход</button>
+        </div>
+        <div class="tw"><table>
+          <thead><tr><th>Позиция</th><th>Ед.</th><th class="num">Остаток</th><th class="num">Мин</th><th>Статус</th><th></th></tr></thead>
+          <tbody id="stockBody"></tbody>
+        </table></div>
+      </div>
+      <div class="card"><h3>Движение ТМЦ</h3>
+        <div class="tw"><table>
+          <thead><tr><th>Дата</th><th>Позиция</th><th>Тип</th><th class="num">Кол</th><th>Комментарий</th><th></th></tr></thead>
+          <tbody id="movesBody"></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <section id="at-store" class="view">
+      <div class="card">
+        <div class="bar">
+          <h2 style="margin:0">Хранение колёс</h2>
+          <div class="grow"></div>
+          <button class="btn pri sm" onclick="addStorage()">+ Принять</button>
+        </div>
+        <div class="tw"><table>
+          <thead><tr><th>Марк.</th><th>Клиент</th><th>Комплект</th><th>Ячейка</th><th>Сезон</th><th>Принято</th><th>Статус</th><th></th></tr></thead>
+          <tbody id="storeBody"></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <section id="at-orders" class="view">
+      <div class="card">
+        <div class="bar">
+          <h2 style="margin:0">Заказы / Брони</h2>
+          <div class="grow"></div>
+          <button class="btn pri sm" onclick="addOrder()">+ Заказ</button>
+        </div>
+        <div class="tw"><table>
+          <thead><tr><th>Дата</th><th>Клиент</th><th>Позиции</th><th class="num">Сумма</th><th>Статус</th><th></th></tr></thead>
+          <tbody id="ordersBody"></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <section id="at-fin" class="view">
+      <div class="card">
+        <div class="bar">
+          <h2 style="margin:0">Финансы</h2>
+          <div class="grow"></div>
+          <input type="date" id="finFrom" style="max-width:150px">
+          <input type="date" id="finTo" style="max-width:150px">
+          <button class="btn sm" onclick="setPeriod('month')">Месяц</button>
+          <button class="btn sm" onclick="setPeriod('year')">Год</button>
+          <button class="btn dk sm" onclick="addExpense()">+ Расход</button>
+        </div>
+        <div class="kpis" id="finKpis"></div>
+      </div>
+      <div class="card"><h3>Расходы</h3>
+        <div class="tw"><table>
+          <thead><tr><th>Дата</th><th>Категория</th><th>Комментарий</th><th class="num">Сумма</th><th></th></tr></thead>
+          <tbody id="finExpBody"></tbody>
+        </table></div>
+      </div>
+      <div class="card"><h3>Выручка</h3>
+        <div class="tw"><table>
+          <thead><tr><th>Дата</th><th>Источник</th><th>Клиент</th><th>Описание</th><th class="num">Сумма</th></tr></thead>
+          <tbody id="finRevBody"></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <section id="at-users" class="view">
+      <div class="card">
+        <div class="bar">
+          <h2 style="margin:0">Учётные записи</h2>
+          <div class="grow"></div>
+          <button class="btn pri sm" onclick="addUser()">+ Учётка</button>
+        </div>
+        <div class="tw"><table>
+          <thead><tr><th>Логин</th><th>Роль</th><th>Клиент</th><th></th></tr></thead>
+          <tbody id="usersBody"></tbody>
+        </table></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ============ МОДАЛКА ============ -->
+<div class="ovl" id="ovl">
+  <div class="mdl">
+    <div class="mdl-h">
+      <h3 id="mdlTitle">Заголовок</h3>
+      <div class="grow"></div>
+      <button class="x" onclick="closeMdl()">✕</button>
+    </div>
+    <div class="mdl-b" id="mdlBody"></div>
   </div>
 </div>
 
 <script>
-/* ================= HELPERS ================= */
-const $ = s => document.querySelector(s);
-const $$ = s => Array.from(document.querySelectorAll(s));
-const uid = () => Math.random().toString(36).slice(2,8) + Date.now().toString(36).slice(-4);
-const esc = s => String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-const money = n => (Math.round((Number(n)||0)*100)/100).toLocaleString('ru-RU') + ' ₽';
-const num = n => (Number(n)||0).toLocaleString('ru-RU');
-const today = () => { const d = new Date(); return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10); };
-const fmtDate = d => d ? d.split('-').reverse().join('.') : '—';
-const hash = s => { let h=0; for(let i=0;i<s.length;i++){h=(h<<5)-h+s.charCodeAt(i);h|=0;} return 'h'+Math.abs(h).toString(36); };
-const empty = t => `<div class="empty"><span class="big">◌</span>${esc(t)}</div>`;
+/* =====================================================================
+   ХЕЛПЕРЫ
+   ===================================================================== */
+function $(s){ return document.querySelector(s); }
+function $$(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); }
+function uid(){ return Math.random().toString(36).slice(2,8)+Date.now().toString(36).slice(-4); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
+function money(n){ return (Math.round((Number(n)||0)*100)/100).toLocaleString('ru-RU')+' ₽'; }
+function num(n){ return (Number(n)||0).toLocaleString('ru-RU'); }
+function todayStr(){ var d=new Date(); return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10); }
+function fmtDate(d){ return d ? d.split('-').reverse().join('.') : '—'; }
+function hashPass(s){ var h=0; for(var i=0;i<s.length;i++){h=(h<<5)-h+s.charCodeAt(i);h|=0;} return 'h'+Math.abs(h).toString(36); }
+function emptyHTML(t){ return '<div class="empty"><span class="big">◌</span>'+esc(t)+'</div>'; }
 
-/* ================= DB ================= */
-const KEY = 'tireCRM_v1';
-let db = null;
-let session = null; // {userId, clientId}
+/* =====================================================================
+   ХРАНИЛИЩЕ
+   ===================================================================== */
+var DB_KEY = 'tireCRM_v2';
+var db = null;
 
-function freshDB(){ return { clients:[], services:[], warehouse:[], moves:[], storage:[], orders:[], visits:[], expenses:[], users:[] }; }
-function saveDB(){ localStorage.setItem(KEY, JSON.stringify(db)); }
+function emptyDB(){
+  return { clients:[], services:[], warehouse:[], moves:[], storage:[], orders:[], visits:[], expenses:[], users:[] };
+}
+
+function saveDB(){
+  localStorage.setItem(DB_KEY, JSON.stringify(db));
+}
 
 function loadDB(){
-  try{
-    const raw = localStorage.getItem(KEY);
-    if(raw){ db = Object.assign(freshDB(), JSON.parse(raw)); }
-    else { db = freshDB(); seed(); saveDB(); }
-  }catch(e){ db = freshDB(); seed(); saveDB(); }
+  var raw = null;
+  try { raw = localStorage.getItem(DB_KEY); } catch(e){}
+  if(raw){
+    try {
+      var parsed = JSON.parse(raw);
+      db = Object.assign(emptyDB(), parsed);
+      return;
+    } catch(e){}
+  }
+  db = emptyDB();
+  seed();
+  saveDB();
 }
 
 function seed(){
-  const S = (name,type,unit,price) => ({id:uid(), name, type, unit, price});
+  function S(name,type,unit,price){ return {id:uid(), name:name, type:type, unit:unit, price:price}; }
   db.services = [
     S('Шиномонтаж R13–R15 (1 колесо)','service','шт',250),
     S('Шиномонтаж R16–R18 (1 колесо)','service','шт',400),
     S('Балансировка (1 колесо)','service','шт',150),
-    S('Ремонт прокола / жгут','service','шт',300),
+    S('Ремонт прокола','service','шт',300),
     S('Сезонная замена комплекта','service','компл',1600),
     S('Хранение колёс (сезон)','service','компл',3000),
-    S('Подкачка азотом (1 колесо)','service','шт',100),
+    S('Подкачка азотом','service','шт',100),
     S('Вентиль резиновый','good','шт',50),
     S('Грузик балансировочный','good','шт',15),
     S('Герметик шинный','good','шт',450)
   ];
-  db.warehouse = db.services.filter(s => s.type === 'good').map(g => ({ id:uid(), nomId:g.id, qty:20, min:5 }));
-  db.users = [{ id:uid(), login:'admin', password:hash('admin123'), role:'admin' }];
-  // демо-клиент с аккаунтом
-  const c = {id:uid(), name:'Иванов Иван', phone:'+7 900 111-22-33', car:'Toyota Camry · А123ВС77', note:''};
-  db.clients.push(c);
-  db.users.push({ id:uid(), login:'ivanov', password:hash('12345'), role:'client', clientId:c.id });
-}
-
-/* ================= NAV ================= */
-function go(page){
-  $$('.page').forEach(p => p.classList.remove('active'));
-  $('#page-' + page).classList.add('active');
-  $$('.nav button').forEach(b => b.classList.toggle('active', b.dataset.page === page));
-  window.scrollTo({top:0,behavior:'smooth'});
-  if(page === 'cabinet') renderCabinet();
-  if(page === 'book') renderBook();
-}
-$$('.nav button').forEach(b => b.addEventListener('click', () => go(b.dataset.page)));
-
-/* ================= AUTH UI ================= */
-function renderUserBox(){
-  const box = $('#userBox');
-  if(!session){
-    box.innerHTML = `<button class="btn ghost sm" onclick="openAuth()">Войти / Регистрация</button>`;
-  } else {
-    const u = db.users.find(x => x.id === session.userId);
-    const name = u?.role === 'admin' ? 'Администратор' : (clientById(u?.clientId)?.name || u.login);
-    const ini = (name[0] || '?').toUpperCase();
-    box.innerHTML = `
-      <div class="user">
-        <div class="avatar">${esc(ini)}</div>
-        <span class="name">${esc(name)}</span>
-        <button class="btn ghost sm" onclick="logout()">Выйти</button>
-      </div>`;
-  }
-}
-
-function openAuth(mode = 'login'){
-  const isLogin = mode === 'login';
-  openModal(isLogin ? 'Вход в личный кабинет' : 'Регистрация', `
-    <form id="authForm" class="form">
-      ${!isLogin ? `<label>Ваше имя<input name="name" required placeholder="Иванов Иван"></label>
-        <div class="grid2">
-          <label>Телефон<input name="phone" placeholder="+7 900 000-00-00"></label>
-          <label>Автомобиль<input name="car" placeholder="Марка · номер"></label>
-        </div>` : ''}
-      <label>Логин<input name="login" required autocomplete="username"></label>
-      <label>Пароль<input type="password" name="password" required autocomplete="current-password"></label>
-      <div class="modal-actions" style="justify-content:space-between">
-        <button type="button" class="btn sm" onclick="${isLogin ? "openAuth('register')" : "openAuth('login')"}">
-          ${isLogin ? 'Нет аккаунта? Регистрация' : 'Уже есть аккаунт? Войти'}
-        </button>
-        <div style="display:flex;gap:8px">
-          <button type="button" class="btn" onclick="closeModal()">Отмена</button>
-          <button class="btn primary" type="submit">${isLogin ? 'Войти' : 'Зарегистрироваться'}</button>
-        </div>
-      </div>
-    </form>
-    ${isLogin ? `<div class="hint">Демо-доступ клиента: <b>ivanov / 12345</b></div>` : ''}
-  `);
-
-  $('#authForm').addEventListener('submit', e => {
-    e.preventDefault();
-    const f = new FormData(e.target);
-    const login = f.get('login').trim();
-    const password = f.get('password');
-
-    if(isLogin){
-      const u = db.users.find(x => x.login === login && x.password === hash(password));
-      if(!u){ alert('Неверный логин или пароль'); return; }
-      session = { userId: u.id, clientId: u.clientId || null };
-    } else {
-      if(db.users.some(x => x.login === login)){ alert('Такой логин уже занят'); return; }
-      const client = { id:uid(), name:f.get('name').trim(), phone:f.get('phone').trim(), car:f.get('car').trim(), note:'' };
-      db.clients.push(client);
-      const user = { id:uid(), login, password:hash(password), role:'client', clientId:client.id };
-      db.users.push(user);
-      session = { userId: user.id, clientId: client.id };
+  db.warehouse = [];
+  for(var i=0;i<db.services.length;i++){
+    if(db.services[i].type==='good'){
+      db.warehouse.push({ id:uid(), nomId:db.services[i].id, qty:20, min:5 });
     }
-    saveDB(); closeModal(); renderUserBox(); go('cabinet');
+  }
+  db.users = [{ id:uid(), login:'admin', password:hashPass('admin123'), role:'admin' }];
+  var c = { id:uid(), name:'Иванов Иван', phone:'+7 900 111-22-33', car:'Toyota Camry · А123ВС77', note:'' };
+  db.clients.push(c);
+  db.users.push({ id:uid(), login:'ivanov', password:hashPass('12345'), role:'client', clientId:c.id });
+}
+
+/* =====================================================================
+   СЕССИЯ
+   ===================================================================== */
+var session = { admin:null, client:null };
+try {
+  var s = localStorage.getItem('crm_session');
+  if(s) session = JSON.parse(s);
+} catch(e){}
+function saveSession(){ localStorage.setItem('crm_session', JSON.stringify(session)); }
+
+/* =====================================================================
+   ССЫЛКИ
+   ===================================================================== */
+function clientById(id){ return db.clients.filter(function(c){return c.id===id;})[0]; }
+function clientName(id){ var c = clientById(id); return c ? c.name : '—'; }
+function serviceById(id){ return db.services.filter(function(s){return s.id===id;})[0]; }
+function whById(id){ return db.warehouse.filter(function(w){return w.id===id;})[0]; }
+function whName(w){ var s = w ? serviceById(w.nomId) : null; return s ? s.name : '—'; }
+function whUnit(w){ var s = w ? serviceById(w.nomId) : null; return s ? s.unit : 'шт'; }
+function goods(){ return db.services.filter(function(s){return s.type==='good';}); }
+function orderSum(o){ return o.items.reduce(function(a,i){ return a + i.qty*i.price; }, 0); }
+
+/* =====================================================================
+   МОДАЛКА
+   ===================================================================== */
+function openMdl(title, html){
+  $('#mdlTitle').textContent = title;
+  $('#mdlBody').innerHTML = html;
+  $('#ovl').classList.add('on');
+}
+function closeMdl(){ $('#ovl').classList.remove('on'); $('#mdlBody').innerHTML=''; }
+$('#ovl').addEventListener('click', function(e){ if(e.target.id==='ovl') closeMdl(); });
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeMdl(); });
+
+/* =====================================================================
+   ПЕРЕКЛЮЧАТЕЛЬ РЕЖИМОВ
+   ===================================================================== */
+var mode = 'client';
+
+function setMode(m){
+  mode = m;
+  $('#btnClient').classList.toggle('on', m==='client');
+  $('#btnAdmin').classList.toggle('on', m==='admin');
+
+  if(m==='admin'){
+    $('#clientPart').classList.add('hide');
+    if(session.admin){
+      $('#adminGate').classList.add('hide');
+      $('#adminPart').classList.remove('hide');
+      renderAdmin();
+    } else {
+      $('#adminPart').classList.add('hide');
+      $('#adminGate').classList.remove('hide');
+    }
+  } else {
+    $('#adminGate').classList.add('hide');
+    $('#adminPart').classList.add('hide');
+    $('#clientPart').classList.remove('hide');
+    renderClient();
+  }
+  renderWho();
+}
+
+$('#btnClient').addEventListener('click', function(){ setMode('client'); });
+$('#btnAdmin').addEventListener('click', function(){ setMode('admin'); });
+
+/* =====================================================================
+   ВХОД АДМИНА
+   ===================================================================== */
+function doAdminLogin(e){
+  e.preventDefault();
+  var login = $('#admLogin').value.trim();
+  var pass = $('#admPass').value;
+  var u = null;
+  for(var i=0;i<db.users.length;i++){
+    var usr = db.users[i];
+    if(usr.login===login && usr.password===hashPass(pass) && usr.role==='admin'){ u = usr; break; }
+  }
+  if(!u){ alert('Неверный логин или пароль'); return; }
+  session.admin = u.id;
+  saveSession();
+  setMode('admin');
+}
+
+function adminLogout(){
+  session.admin = null;
+  saveSession();
+  setMode('client');
+}
+
+/* =====================================================================
+   КТО В ШАПКЕ
+   ===================================================================== */
+function renderWho(){
+  var box = $('#whoBox');
+  if(mode==='admin'){
+    if(session.admin){
+      var u = db.users.filter(function(x){return x.id===session.admin;})[0];
+      box.innerHTML = '<div class="who"><div class="avatar">A</div><span>'+esc(u?u.login:'admin')+'</span>'+
+        ' <button class="btn gho sm" onclick="adminLogout()">Выйти</button></div>';
+    } else {
+      box.innerHTML = '';
+    }
+    return;
+  }
+  if(session.client){
+    var c = clientById(session.client);
+    var ini = c ? c.name[0].toUpperCase() : '?';
+    box.innerHTML = '<div class="who"><div class="avatar">'+esc(ini)+'</div><span>'+esc(c?c.name:'')+'</span>'+
+      ' <button class="btn gho sm" onclick="clientLogout()">Выйти</button></div>';
+  } else {
+    box.innerHTML = '<button class="btn gho sm" onclick="openAuth(false)">Войти / Регистрация</button>';
+  }
+}
+
+function clientLogout(){
+  session.client = null;
+  saveSession();
+  switchClient('home');
+  renderClient();
+}
+
+/* =====================================================================
+   АВТОРИЗАЦИЯ КЛИЕНТА
+   ===================================================================== */
+function openAuth(isReg){
+  var html = '<form id="authForm" class="frm">';
+  if(isReg){
+    html += '<label>Имя<input name="name" required></label>'+
+            '<div class="g2"><label>Телефон<input name="phone"></label>'+
+            '<label>Авто<input name="car"></label></div>';
+  }
+  html += '<label>Логин<input name="login" required></label>'+
+          '<label>Пароль<input name="password" type="password" required></label>'+
+          '<div class="mdl-f" style="justify-content:space-between">'+
+            '<button type="button" class="btn sm" onclick="openAuth('+(isReg?'false':'true')+')">'+(isReg?'Уже есть аккаунт':'Регистрация')+'</button>'+
+            '<div style="display:flex;gap:6px">'+
+              '<button type="button" class="btn" onclick="closeMdl()">Отмена</button>'+
+              '<button class="btn pri" type="submit">'+(isReg?'Создать':'Войти')+'</button>'+
+            '</div>'+
+          '</div>'+
+        '</form>';
+  if(!isReg) html += '<div class="hint">Демо-клиент: <b>ivanov / 12345</b></div>';
+  openMdl(isReg?'Регистрация':'Вход в личный кабинет', html);
+
+  document.getElementById('authForm').addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var f = new FormData(ev.target);
+    var login = String(f.get('login')).trim();
+    var password = String(f.get('password'));
+
+    if(isReg){
+      var name = String(f.get('name')).trim();
+      if(!name){ alert('Укажите имя'); return; }
+      var dup = db.users.filter(function(u){return u.login===login;}).length > 0;
+      if(dup){ alert('Логин занят'); return; }
+      var c = { id:uid(), name:name, phone:String(f.get('phone')).trim(), car:String(f.get('car')).trim(), note:'' };
+      db.clients.push(c);
+      db.users.push({ id:uid(), login:login, password:hashPass(password), role:'client', clientId:c.id });
+      session.client = c.id;
+    } else {
+      var found = null;
+      for(var i=0;i<db.users.length;i++){
+        var u = db.users[i];
+        if(u.login===login && u.password===hashPass(password) && u.role==='client'){ found = u; break; }
+      }
+      if(!found){ alert('Неверный логин или пароль'); return; }
+      session.client = found.clientId;
+    }
+    saveDB();
+    saveSession();
+    closeMdl();
+    renderWho();
+    renderClient();
+    switchClient('cab');
   });
 }
 
-function logout(){ session = null; renderUserBox(); go('home'); }
-
-function clientById(id){ return db.clients.find(c => c.id === id); }
-function serviceById(id){ return db.services.find(s => s.id === id); }
-function clientName(id){ return clientById(id)?.name || '—'; }
-
-/* ================= MODAL ================= */
-function openModal(title, html){
-  $('#modalTitle').textContent = title;
-  $('#modalBody').innerHTML = html;
-  $('#overlay').classList.add('open');
+/* =====================================================================
+   КЛИЕНТ — НАВИГАЦИЯ
+   ===================================================================== */
+function switchClient(name){
+  $$('#clientPart .tabs button').forEach(function(b){
+    b.classList.toggle('on', b.dataset.ct === name);
+  });
+  $$('#clientPart .view').forEach(function(v){ v.classList.remove('on'); });
+  var el = document.getElementById('ct-'+name);
+  if(el) el.classList.add('on');
+  if(name==='book') renderBook();
+  if(name==='cab') renderCab();
 }
-function closeModal(){ $('#overlay').classList.remove('open'); }
-$('#overlay').addEventListener('click', e => { if(e.target.id === 'overlay') closeModal(); });
-document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
 
-/* ================= ГЛАВНАЯ ================= */
+$$('#clientPart .tabs button').forEach(function(b){
+  b.addEventListener('click', function(){ switchClient(b.dataset.ct); });
+});
+
+/* =====================================================================
+   КЛИЕНТ — РЕНДЕР
+   ===================================================================== */
+var bookItems = [];
+
+function renderClient(){
+  renderWho();
+  renderPublic();
+  if($('#ct-book').classList.contains('on')) renderBook();
+  if($('#ct-cab').classList.contains('on')) renderCab();
+}
+
 function renderPublic(){
-  const services = db.services.filter(s => s.type === 'service').length;
-  const goods = db.services.filter(s => s.type === 'good').length;
-  const sets = db.storage.filter(s => s.status === 'Хранится').length;
+  var servCount = db.services.filter(function(s){return s.type==='service';}).length;
+  var goodCount = db.services.filter(function(s){return s.type==='good';}).length;
+  var sets = db.storage.filter(function(s){return s.status==='Хранится';}).length;
 
-  $('#publicKpis').innerHTML = `
-    <div class="kpi blue"><div class="lbl">Услуг в прайсе</div><div class="val">${services}</div></div>
-    <div class="kpi"><div class="lbl">Товаров в наличии</div><div class="val">${goods}</div></div>
-    <div class="kpi green"><div class="lbl">Комплектов на хранении</div><div class="val">${sets}</div></div>
-    <div class="kpi gray"><div class="lbl">График работы</div><div class="val" style="font-size:15px;margin-top:10px">Пн–Вс · 9:00–21:00</div></div>
-  `;
+  $('#pubKpis').innerHTML =
+    '<div class="kpi bl"><div class="lbl">Услуг</div><div class="val">'+servCount+'</div></div>'+
+    '<div class="kpi"><div class="lbl">Товаров</div><div class="val">'+goodCount+'</div></div>'+
+    '<div class="kpi gr"><div class="lbl">Комплектов на хранении</div><div class="val">'+sets+'</div></div>'+
+    '<div class="kpi gy"><div class="lbl">График</div><div class="val" style="font-size:14px;margin-top:8px">Пн–Вс · 9–21</div></div>';
 
-  const q = ($('#priceSearch').value || '').toLowerCase().trim();
-  const list = db.services.filter(s => !q || s.name.toLowerCase().includes(q));
-
-  $('#priceGrid').innerHTML = list.length ? list.map(s => `
-    <div class="svc">
-      <span class="type ${s.type === 'service' ? 't-service' : 't-good'}">${s.type === 'service' ? 'Услуга' : 'Товар'}</span>
-      <div class="name">${esc(s.name)}</div>
-      <div class="price">${money(s.price)}<span class="unit"> / ${esc(s.unit)}</span></div>
-    </div>`).join('') : empty('Ничего не найдено');
-}
-$('#priceSearch')?.addEventListener('input', renderPublic);
-
-/* ================= КАБИНЕТ ================= */
-function renderCabinet(){
-  const box = $('#cabinetContent');
-  if(!session){
-    box.innerHTML = `<div class="card"><div class="empty"><span class="big">🔒</span>Войдите, чтобы увидеть личный кабинет<br><br><button class="btn primary" onclick="openAuth()">Войти / Регистрация</button></div></div>`;
-    return;
-  }
-  const u = db.users.find(x => x.id === session.userId);
-  if(u.role === 'admin'){
-    box.innerHTML = `<div class="card"><div class="empty"><span class="big">🛠</span>Это аккаунт администратора.<br><br><a class="btn primary" href="admin.html">Перейти в админ-панель →</a></div></div>`;
-    return;
-  }
-
-  const cid = session.clientId;
-  const c = clientById(cid);
-  const visits = db.visits.filter(v => v.clientId === cid).sort((a,b) => b.date.localeCompare(a.date));
-  const storage = db.storage.filter(s => s.clientId === cid);
-  const orders = db.orders.filter(o => o.clientId === cid).sort((a,b) => b.date.localeCompare(a.date));
-  const totalSpent = visits.reduce((a,v) => a + v.sum, 0);
-
-  box.innerHTML = `
-    <div class="card">
-      <div class="card-head">
-        <div class="avatar" style="width:52px;height:52px;font-size:20px">${esc((c?.name || '?')[0].toUpperCase())}</div>
-        <div>
-          <h3 style="margin:0">${esc(c?.name || u.login)}</h3>
-          <div class="muted">${esc(c?.phone || '')} · ${esc(c?.car || '')}</div>
-        </div>
-        <div class="spacer"></div>
-        <button class="btn" onclick="openProfileEdit()">Редактировать профиль</button>
-      </div>
-    </div>
-
-    <div class="kpis">
-      <div class="kpi green"><div class="lbl">Всего визитов</div><div class="val">${visits.length}</div></div>
-      <div class="kpi blue"><div class="lbl">Потрачено</div><div class="val">${money(totalSpent)}</div></div>
-      <div class="kpi"><div class="lbl">Комплектов на хранении</div><div class="val">${storage.filter(s => s.status === 'Хранится').length}</div></div>
-      <div class="kpi gray"><div class="lbl">Заказов</div><div class="val">${orders.length}</div></div>
-    </div>
-
-    <div class="card">
-      <div class="card-head"><h3>История услуг</h3></div>
-      <div class="table-wrap"><table>
-        <thead><tr><th>Дата</th><th>Услуга</th><th class="num">Кол-во</th><th class="num">Сумма</th></tr></thead>
-        <tbody>${visits.length ? visits.map(v => `
-          <tr>
-            <td>${fmtDate(v.date)}</td>
-            <td>${esc(serviceById(v.serviceId)?.name || '—')}${v.comment ? `<div class="muted">${esc(v.comment)}</div>` : ''}</td>
-            <td class="num">${num(v.qty)}</td>
-            <td class="num"><b>${money(v.sum)}</b></td>
-          </tr>`).join('') : `<tr><td colspan="4">${empty('Пока нет визитов')}</td></tr>`}
-        </tbody>
-      </table></div>
-    </div>
-
-    <div class="card">
-      <div class="card-head"><h3>Мои колёса на хранении</h3></div>
-      <div class="table-wrap"><table>
-        <thead><tr><th>Маркировка</th><th>Комплект</th><th>Ячейка</th><th>Сезон</th><th>Принято</th><th>Статус</th></tr></thead>
-        <tbody>${storage.length ? storage.map(s => `
-          <tr>
-            <td><b>${esc(s.mark)}</b></td>
-            <td>${esc(s.setDesc)}</td>
-            <td>${esc(s.location)}</td>
-            <td>${esc(s.season)}</td>
-            <td>${fmtDate(s.dateIn)}</td>
-            <td><span class="badge ${s.status === 'Хранится' ? 'b-ok' : 'b-gray'}">${s.status}</span></td>
-          </tr>`).join('') : `<tr><td colspan="6">${empty('Нет комплектов на хранении')}</td></tr>`}
-        </tbody>
-      </table></div>
-    </div>
-
-    <div class="card">
-      <div class="card-head"><h3>Мои заказы и заявки</h3></div>
-      <div class="table-wrap"><table>
-        <thead><tr><th>Дата</th><th>Позиции</th><th class="num">Сумма</th><th>Статус</th></tr></thead>
-        <tbody>${orders.length ? orders.map(o => `
-          <tr>
-            <td>${fmtDate(o.date)}</td>
-            <td class="muted">${o.items.map(i => esc(serviceById(i.nomId)?.name || '—')).join(', ') || '—'}</td>
-            <td class="num"><b>${money(o.items.reduce((a,i) => a+i.qty*i.price, 0))}</b></td>
-            <td><span class="badge ${o.status === 'Заявка' ? 'b-warn' : o.status === 'Бронь' ? 'b-info' : o.status === 'Выдан' ? 'b-ok' : 'b-gray'}">${o.status}</span></td>
-          </tr>`).join('') : `<tr><td colspan="4">${empty('Заказов нет')}</td></tr>`}
-        </tbody>
-      </table></div>
-    </div>
-  `;
-}
-
-function openProfileEdit(){
-  const c = clientById(session.clientId);
-  openModal('Редактировать профиль', `
-    <form id="profForm" class="form">
-      <label>ФИО<input name="name" required value="${esc(c.name)}"></label>
-      <div class="grid2">
-        <label>Телефон<input name="phone" value="${esc(c.phone || '')}"></label>
-        <label>Автомобиль<input name="car" value="${esc(c.car || '')}"></label>
-      </div>
-      <label>Заметка<textarea name="note" rows="2">${esc(c.note || '')}</textarea></label>
-      <div class="modal-actions">
-        <button type="button" class="btn" onclick="closeModal()">Отмена</button>
-        <button class="btn primary" type="submit">Сохранить</button>
-      </div>
-    </form>`);
-  $('#profForm').addEventListener('submit', e => {
-    e.preventDefault();
-    const f = new FormData(e.target);
-    Object.assign(c, {
-      name:f.get('name').trim(),
-      phone:f.get('phone').trim(),
-      car:f.get('car').trim(),
-      note:f.get('note').trim()
-    });
-    saveDB(); closeModal(); renderCabinet(); renderUserBox();
+  var q = ($('#priceQ').value||'').toLowerCase().trim();
+  var list = db.services.filter(function(s){
+    return !q || s.name.toLowerCase().indexOf(q) !== -1;
   });
+  var grid = $('#priceGrid');
+  if(!list.length){ grid.innerHTML = emptyHTML('Ничего не найдено'); return; }
+  grid.innerHTML = list.map(function(s){
+    return '<div class="svc">'+
+      '<span class="tp '+(s.type==='service'?'tp-s':'tp-g')+'">'+(s.type==='service'?'Услуга':'Товар')+'</span>'+
+      '<div class="nm">'+esc(s.name)+'</div>'+
+      '<div class="pr">'+money(s.price)+'<span class="un"> / '+esc(s.unit)+'</span></div>'+
+    '</div>';
+  }).join('');
 }
+$('#priceQ').addEventListener('input', renderPublic);
 
-/* ================= ЗАПИСЬ ================= */
-let bookItems = [];
 function renderBook(){
-  const box = $('#bookContent');
-  if(!session || db.users.find(x => x.id === session.userId)?.role !== 'client'){
-    box.innerHTML = `<div class="empty"><span class="big">🔒</span>Чтобы записаться, войдите в личный кабинет<br><br><button class="btn primary" onclick="openAuth()">Войти / Регистрация</button></div>`;
+  var box = $('#bookBox');
+  if(!session.client){
+    box.innerHTML = '<div class="empty"><span class="big">🔒</span>Войдите, чтобы записаться<br><br>'+
+      '<button class="btn pri" onclick="openAuth(false)">Войти / Регистрация</button></div>';
     return;
   }
-  const services = db.services.filter(s => s.type === 'service');
-  box.innerHTML = `
-    <form id="bookForm" class="form">
-      <div class="grid2">
-        <label>Дата<input type="date" name="date" value="${today()}" required></label>
-        <label>Удобное время<select name="time">
-          <option>09:00–11:00</option><option>11:00–13:00</option><option>13:00–15:00</option>
-          <option>15:00–17:00</option><option>17:00–19:00</option><option>19:00–21:00</option>
-        </select></label>
-      </div>
-      <label>Комментарий<textarea name="comment" rows="3" placeholder="Например: переобувка R16, есть литьё…"></textarea></label>
+  var services = db.services.filter(function(s){return s.type==='service';});
+  if(!services.length){
+    box.innerHTML = emptyHTML('Прайс-лист пуст — администратор ещё не добавил услуги');
+    return;
+  }
+  var choices = services.map(function(s){
+    return '<label class="choice">'+
+      '<input type="checkbox" data-nomid="'+s.id+'" data-price="'+s.price+'" onchange="toggleBook(this)">'+
+      '<span style="flex:1">'+esc(s.name)+'</span>'+
+      '<b style="color:#ff6b1a">'+money(s.price)+'</b>'+
+    '</label>';
+  }).join('');
 
-      <div class="hint">Выберите услуги (можно несколько):</div>
-      <div id="bookChoices" style="display:flex;flex-direction:column;gap:8px;max-height:280px;overflow:auto;padding:4px">
-        ${services.map(s => `
-          <label style="flex-direction:row;align-items:center;gap:12px;padding:10px 14px;background:#f7f9fc;border:1px solid var(--line);border-radius:12px;font-weight:500;color:var(--ink);cursor:pointer">
-            <input type="checkbox" data-nomid="${s.id}" data-price="${s.price}" onchange="toggleBookItem(this)" style="width:auto">
-            <span style="flex:1">${esc(s.name)}</span>
-            <b style="color:var(--accent)">${money(s.price)}</b>
-          </label>`).join('')}
-      </div>
+  box.innerHTML = '<form id="bookForm" class="frm">'+
+    '<div class="g2">'+
+      '<label>Дата<input type="date" name="date" value="'+todayStr()+'" required></label>'+
+      '<label>Время<select name="time">'+
+        '<option>09:00–11:00</option><option>11:00–13:00</option><option>13:00–15:00</option>'+
+        '<option>15:00–17:00</option><option>17:00–19:00</option><option>19:00–21:00</option>'+
+      '</select></label>'+
+    '</div>'+
+    '<label>Комментарий<textarea name="comment" rows="2" placeholder="Например: R16, литьё…"></textarea></label>'+
+    '<div class="hint">Выберите услуги:</div>'+
+    '<div style="display:flex;flex-direction:column;gap:6px;max-height:240px;overflow:auto">'+choices+'</div>'+
+    '<div id="bookSum" class="hint"></div>'+
+    '<div class="mdl-f"><button class="btn pri" type="submit">Отправить заявку</button></div>'+
+  '</form>';
 
-      <div id="bookSummary" class="hint"></div>
-
-      <div class="modal-actions" style="justify-content:flex-end">
-        <button class="btn primary" type="submit">Отправить заявку</button>
-      </div>
-    </form>`;
-
-  $('#bookForm').addEventListener('submit', e => {
-    e.preventDefault();
+  document.getElementById('bookForm').addEventListener('submit', function(ev){
+    ev.preventDefault();
     if(!bookItems.length){ alert('Выберите хотя бы одну услугу'); return; }
-    const f = new FormData(e.target);
+    var f = new FormData(ev.target);
     db.orders.push({
       id:uid(),
-      date:f.get('date'),
-      time:f.get('time'),
-      clientId:session.clientId,
+      date:String(f.get('date')),
+      time:String(f.get('time')),
+      clientId:session.client,
       status:'Заявка',
       prepay:0,
-      comment:f.get('comment').trim(),
-      items: bookItems.map(i => ({...i}))
+      comment:String(f.get('comment')).trim(),
+      items: bookItems.map(function(i){ return { nomId:i.nomId, qty:i.qty, price:i.price }; })
     });
     saveDB();
     bookItems = [];
-    alert('Заявка отправлена! Мы свяжемся с вами для подтверждения.');
-    go('cabinet');
+    alert('Заявка отправлена! Администратор свяжется с вами.');
+    switchClient('cab');
   });
-  renderBookSummary();
+  renderBookSum();
 }
 
-function toggleBookItem(el){
-  const nomId = el.dataset.nomid;
-  const price = Number(el.dataset.price);
-  if(el.checked) bookItems.push({ nomId, qty:1, price });
-  else bookItems = bookItems.filter(i => i.nomId !== nomId);
-  renderBookSummary();
+function toggleBook(el){
+  var nomId = el.dataset.nomid;
+  var price = Number(el.dataset.price);
+  if(el.checked){
+    bookItems.push({ nomId:nomId, qty:1, price:price });
+  } else {
+    bookItems = bookItems.filter(function(i){ return i.nomId!==nomId; });
+  }
+  renderBookSum();
 }
-function renderBookSummary(){
-  const box = $('#bookSummary');
+
+function renderBookSum(){
+  var box = $('#bookSum');
   if(!box) return;
-  const sum = bookItems.reduce((a,i) => a+i.qty*i.price, 0);
+  var sum = bookItems.reduce(function(a,i){ return a + i.qty*i.price; }, 0);
   box.innerHTML = bookItems.length
-    ? `Выбрано: ${bookItems.length} · <b style="color:var(--accent)">${money(sum)}</b>`
+    ? 'Выбрано: '+bookItems.length+' · <b style="color:#ff6b1a">'+money(sum)+'</b>'
     : 'Ничего не выбрано';
 }
 
-/* ================= INIT ================= */
+function renderCab(){
+  var box = $('#cabBox');
+  if(!session.client){
+    box.innerHTML = '<div class="card"><div class="empty"><span class="big">🔒</span>Войдите в личный кабинет<br><br>'+
+      '<button class="btn pri" onclick="openAuth(false)">Войти / Регистрация</button></div></div>';
+    return;
+  }
+  var cid = session.client;
+  var c = clientById(cid);
+  var visits = db.visits.filter(function(v){return v.clientId===cid;}).sort(function(a,b){ return b.date.localeCompare(a.date); });
+  var storage = db.storage.filter(function(s){return s.clientId===cid;});
+  var orders = db.orders.filter(function(o){return o.clientId===cid;}).sort(function(a,b){ return b.date.localeCompare(a.date); });
+  var total = visits.reduce(function(a,v){ return a + v.sum; }, 0);
+
+  var visitsRows = visits.length
+    ? visits.map(function(v){
+        return '<tr><td>'+fmtDate(v.date)+'</td><td>'+esc((serviceById(v.serviceId)||{name:'—'}).name)+'</td>'+
+          '<td class="num"><b>'+money(v.sum)+'</b></td></tr>';
+      }).join('')
+    : '<tr><td colspan="3">'+emptyHTML('Пока нет визитов')+'</td></tr>';
+
+  var storageRows = storage.length
+    ? storage.map(function(s){
+        return '<tr><td><code class="mk">'+esc(s.mark)+'</code></td>'+
+          '<td>'+esc(s.setDesc)+'</td><td>'+esc(s.location)+'</td><td>'+esc(s.season)+'</td>'+
+          '<td><span class="bdg '+(s.status==='Хранится'?'bd-gr':'bd-gy')+'">'+s.status+'</span></td></tr>';
+      }).join('')
+    : '<tr><td colspan="5">'+emptyHTML('Нет комплектов на хранении')+'</td></tr>';
+
+  var ordersRows = orders.length
+    ? orders.map(function(o){
+        var items = o.items.map(function(i){ return esc((serviceById(i.nomId)||{name:'—'}).name); }).join(', ');
+        var cls = o.status==='Заявка'?'bd-yl':o.status==='Выдан'?'bd-gr':'bd-bl';
+        return '<tr><td>'+fmtDate(o.date)+'</td><td class="muted">'+(items||'—')+'</td>'+
+          '<td class="num"><b>'+money(orderSum(o))+'</b></td>'+
+          '<td><span class="bdg '+cls+'">'+o.status+'</span></td></tr>';
+      }).join('')
+    : '<tr><td colspan="4">'+emptyHTML('Заказов нет')+'</td></tr>';
+
+  box.innerHTML =
+    '<div class="card">'+
+      '<div class="bar">'+
+        '<div class="avatar" style="width:46px;height:46px;font-size:18px">'+esc((c?c.name:'?')[0].toUpperCase())+'</div>'+
+        '<div><h3 style="margin:0">'+esc(c?c.name:'')+'</h3>'+
+          '<div class="muted">'+esc(c?c.phone:'')+' · '+esc(c?c.car:'')+'</div></div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="kpis">'+
+      '<div class="kpi gr"><div class="lbl">Визитов</div><div class="val">'+visits.length+'</div></div>'+
+      '<div class="kpi bl"><div class="lbl">Потрачено</div><div class="val">'+money(total)+'</div></div>'+
+      '<div class="kpi"><div class="lbl">Комплектов на хранении</div><div class="val">'+storage.filter(function(s){return s.status==='Хранится';}).length+'</div></div>'+
+      '<div class="kpi gy"><div class="lbl">Заказов</div><div class="val">'+orders.length+'</div></div>'+
+    '</div>'+
+    '<div class="card"><h3>История услуг</h3><div class="tw"><table>'+
+      '<thead><tr><th>Дата</th><th>Услуга</th><th class="num">Сумма</th></tr></thead>'+
+      '<tbody>'+visitsRows+'</tbody></table></div></div>'+
+    '<div class="card"><h3>Мои колёса на хранении</h3><div class="tw"><table>'+
+      '<thead><tr><th>Марк.</th><th>Комплект</th><th>Ячейка</th><th>Сезон</th><th>Статус</th></tr></thead>'+
+      '<tbody>'+storageRows+'</tbody></table></div></div>'+
+    '<div class="card"><h3>Мои заявки и заказы</h3><div class="tw"><table>'+
+      '<thead><tr><th>Дата</th><th>Позиции</th><th class="num">Сумма</th><th>Статус</th></tr></thead>'+
+      '<tbody>'+ordersRows+'</tbody></table></div></div>';
+}
+
+/* =====================================================================
+   АДМИН — НАВИГАЦИЯ
+   ===================================================================== */
+function switchAdmin(name){
+  $$('#adminTabs button').forEach(function(b){ b.classList.toggle('on', b.dataset.at===name); });
+  $$('#adminPart .view').forEach(function(v){ v.classList.remove('on'); });
+  var el = document.getElementById('at-'+name);
+  if(el) el.classList.add('on');
+  renderAdmin();
+}
+
+$$('#adminTabs button').forEach(function(b){
+  b.addEventListener('click', function(){ switchAdmin(b.dataset.at); });
+});
+
+/* =====================================================================
+   АДМИН — РЕНДЕР
+   ===================================================================== */
+function renderAdmin(){
+  if(!session.admin) return;
+
+  var newReqs = db.orders.filter(function(o){return o.status==='Заявка';}).length;
+  var badge = $('#reqBadge');
+  if(newReqs){ badge.classList.remove('hide'); badge.textContent = newReqs; }
+  else badge.classList.add('hide');
+
+  var active = null;
+  $$('#adminTabs button').forEach(function(b){ if(b.classList.contains('on')) active = b.dataset.at; });
+  if(!active) active = 'dash';
+
+  if(active==='dash') renderDash();
+  if(active==='reqs') renderReqs();
+  if(active==='clients') renderClientsAdmin();
+  if(active==='price') renderPriceAdmin();
+  if(active==='stock') renderStock();
+  if(active==='store') renderStore();
+  if(active==='orders') renderOrders();
+  if(active==='fin') renderFin();
+  if(active==='users') renderUsers();
+}
+
+/* ---- Обзор ---- */
+function renderDash(){
+  var m = todayStr().slice(0,7);
+  var mv = db.visits.filter(function(v){ return v.date.indexOf(m)===0; });
+  var rev = mv.reduce(function(a,v){ return a+v.sum; },0);
+  var activeStore = db.storage.filter(function(s){return s.status==='Хранится';}).length;
+  var low = db.warehouse.filter(function(w){ return w.qty<=w.min; }).length;
+  var newReqs = db.orders.filter(function(o){return o.status==='Заявка';}).length;
+
+  $('#dashKpis').innerHTML =
+    '<div class="kpi gr"><div class="lbl">Выручка за месяц</div><div class="val">'+money(rev)+'</div></div>'+
+    '<div class="kpi bl"><div class="lbl">Клиентов</div><div class="val">'+db.clients.length+'</div></div>'+
+    '<div class="kpi"><div class="lbl">Комплектов на хранении</div><div class="val">'+activeStore+'</div></div>'+
+    '<div class="kpi '+(newReqs?'rd':'gy')+'"><div class="lbl">Новых заявок</div><div class="val">'+newReqs+'</div></div>'+
+    '<div class="kpi '+(low?'rd':'gr')+'"><div class="lbl">Мало на складе</div><div class="val">'+low+'</div></div>';
+
+  var last = db.visits.slice().sort(function(a,b){ return b.date.localeCompare(a.date); }).slice(0,6);
+  $('#dashVisits').innerHTML = last.length
+    ? last.map(function(v){
+        return '<div class="li"><span class="d"></span><div class="g">'+
+          '<div class="t">'+esc(clientName(v.clientId))+'</div>'+
+          '<div class="muted">'+esc((serviceById(v.serviceId)||{name:'—'}).name)+' · '+fmtDate(v.date)+'</div>'+
+          '</div><strong>'+money(v.sum)+'</strong></div>';
+      }).join('')
+    : emptyHTML('Нет услуг');
+
+  var open = db.orders.filter(function(o){ return o.status!=='Выдан'; }).slice(0,6);
+  $('#dashOrders').innerHTML = open.length
+    ? open.map(function(o){
+        var cls = o.status==='Заявка'?'bd-yl':o.status==='Бронь'?'bd-bl':'bd-gy';
+        return '<div class="li"><div class="g">'+
+          '<div class="t">'+esc(clientName(o.clientId))+'</div>'+
+          '<div class="muted">'+o.items.length+' поз. · '+fmtDate(o.date)+'</div>'+
+          '</div><span class="bdg '+cls+'">'+o.status+'</span>'+
+          '<strong>'+money(orderSum(o))+'</strong></div>';
+      }).join('')
+    : emptyHTML('Активных заказов нет');
+
+  var alerts = [];
+  db.warehouse.filter(function(w){ return w.qty<=w.min; }).forEach(function(w){
+    alerts.push('<div class="li"><span class="bdg bd-rd">Склад</span><div class="g">'+
+      '<div class="t">'+esc(whName(w))+'</div>'+
+      '<div class="muted">'+num(w.qty)+' '+esc(whUnit(w))+' — ниже минимума</div></div>'+
+      '<button class="btn sm" onclick="addMove(\'in\',\''+w.id+'\')">Приход</button></div>');
+  });
+  $('#dashAlerts').innerHTML = alerts.length ? alerts.join('') : emptyHTML('Всё в порядке 👍');
+}
+
+/* ---- Заявки ---- */
+function renderReqs(){
+  var list = db.orders.filter(function(o){ return o.status==='Заявка'; })
+    .sort(function(a,b){ return b.date.localeCompare(a.date); });
+  $('#reqBody').innerHTML = list.length
+    ? list.map(function(o){
+        var items = o.items.map(function(i){ return esc((serviceById(i.nomId)||{name:'—'}).name); }).join('<br>');
+        var c = clientById(o.clientId);
+        return '<tr>'+
+          '<td>'+fmtDate(o.date)+'</td>'+
+          '<td><b>'+esc(clientName(o.clientId))+'</b><div class="muted">'+esc(c?c.phone:'')+'</div></td>'+
+          '<td class="muted">'+items+'</td>'+
+          '<td>'+esc(o.time||'—')+'</td>'+
+          '<td class="num"><b>'+money(orderSum(o))+'</b></td>'+
+          '<td><span class="bdg bd-yl">Заявка</span></td>'+
+          '<td class="act">'+
+            '<button class="btn sm pri" onclick="approveReq(\''+o.id+'\')">Принять</button>'+
+            '<button class="btn sm red" onclick="delOrder(\''+o.id+'\')">✕</button>'+
+          '</td>'+
+        '</tr>';
+      }).join('')
+    : '<tr><td colspan="7">'+emptyHTML('Новых заявок нет')+'</td></tr>';
+}
+
+function approveReq(id){
+  var o = null;
+  for(var i=0;i<db.orders.length;i++){ if(db.orders[i].id===id){ o = db.orders[i]; break; } }
+  if(!o) return;
+  var html = '<form id="apFrm" class="frm">'+
+    '<div class="hint">Клиент: <b>'+esc(clientName(o.clientId))+'</b> · Сумма: <b>'+money(orderSum(o))+'</b></div>'+
+    '<div class="g2">'+
+      '<label>Дата<input type="date" name="date" value="'+o.date+'" required></label>'+
+      '<label>Статус<select name="status">'+
+        '<option value="Бронь" selected>Бронь</option>'+
+        '<option value="Закуплено">Закуплено</option>'+
+      '</select></label>'+
+    '</div>'+
+    '<label>Комментарий<textarea name="comment" rows="2">'+esc(o.comment||'')+'</textarea></label>'+
+    '<div class="mdl-f"><button type="button" class="btn" onclick="closeMdl()">Отмена</button>'+
+    '<button class="btn pri" type="submit">Подтвердить</button></div></form>';
+  openMdl('Подтвердить заявку', html);
+
+  document.getElementById('apFrm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var f = new FormData(e.target);
+    o.status = String(f.get('status'));
+    o.date = String(f.get('date'));
+    o.comment = String(f.get('comment')).trim();
+    saveDB(); closeMdl(); renderAdmin();
+  });
+}
+
+/* ---- Клиенты ---- */
+function renderClientsAdmin(){
+  var q = ($('#clientQ').value||'').toLowerCase().trim();
+  var list = db.clients.filter(function(c){
+    if(!q) return true;
+    return (c.name+' '+c.phone+' '+c.car).toLowerCase().indexOf(q)!==-1;
+  });
+  $('#clientsBody').innerHTML = list.length
+    ? list.map(function(c){
+        var vs = db.visits.filter(function(v){ return v.clientId===c.id; });
+        var total = vs.reduce(function(a,v){ return a+v.sum; },0);
+        var u = null;
+        for(var i=0;i<db.users.length;i++){ if(db.users[i].clientId===c.id){ u = db.users[i]; break; } }
+        return '<tr>'+
+          '<td><strong>'+esc(c.name)+'</strong><div class="muted">'+esc(c.car||'')+'</div></td>'+
+          '<td>'+esc(c.phone||'—')+'</td>'+
+          '<td>'+(u?'<code class="mk">'+esc(u.login)+'</code>':'<span class="muted">—</span>')+'</td>'+
+          '<td class="num">'+vs.length+'</td>'+
+          '<td class="num"><b>'+money(total)+'</b></td>'+
+          '<td class="act">'+
+            '<button class="btn sm pri" onclick="addVisit(\''+c.id+'\')">+ Услуга</button>'+
+            '<button class="btn sm red" onclick="delClient(\''+c.id+'\')">✕</button>'+
+          '</td></tr>';
+      }).join('')
+    : '<tr><td colspan="6">'+emptyHTML('Клиенты не найдены')+'</td></tr>';
+}
+$('#clientQ').addEventListener('input', renderClientsAdmin);
+
+function addClient(){
+  openMdl('Новый клиент',
+    '<form id="cFrm" class="frm">'+
+      '<label>ФИО / Название<input name="name" required></label>'+
+      '<div class="g2">'+
+        '<label>Телефон<input name="phone"></label>'+
+        '<label>Авто<input name="car"></label>'+
+      '</div>'+
+      '<div class="hint">Опционально — создать логин для личного кабинета:</div>'+
+      '<div class="g2">'+
+        '<label>Логин<input name="login"></label>'+
+        '<label>Пароль<input name="password"></label>'+
+      '</div>'+
+      '<div class="mdl-f"><button type="button" class="btn" onclick="closeMdl()">Отмена</button>'+
+      '<button class="btn pri" type="submit">Сохранить</button></div>'+
+    '</form>');
+
+  document.getElementById('cFrm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var f = new FormData(e.target);
+    var login = String(f.get('login')).trim();
+    var pass = String(f.get('password'));
+    if(login){
+      if(db.users.filter(function(u){return u.login===login;}).length){ alert('Логин занят'); return; }
+      if(!pass){ alert('Введите пароль'); return; }
+    }
+    var c = { id:uid(), name:String(f.get('name')).trim(), phone:String(f.get('phone')).trim(), car:String(f.get('car')).trim(), note:'' };
+    db.clients.push(c);
+    if(login) db.users.push({ id:uid(), login:login, password:hashPass(pass), role:'client', clientId:c.id });
+    saveDB(); closeMdl(); renderClientsAdmin();
+  });
+}
+
+function delClient(id){
+  if(!confirm('Удалить клиента и всю историю?')) return;
+  db.clients = db.clients.filter(function(c){ return c.id!==id; });
+  db.visits = db.visits.filter(function(v){ return v.clientId!==id; });
+  db.orders = db.orders.filter(function(o){ return o.clientId!==id; });
+  db.users = db.users.filter(function(u){ return u.clientId!==id; });
+  saveDB(); renderClientsAdmin();
+}
+
+function addVisit(clientId){
+  var opts = db.services.map(function(s){
+    return '<option value="'+s.id+'" data-price="'+s.price+'">'+esc(s.name)+' — '+money(s.price)+'</option>';
+  }).join('');
+  openMdl('Оказанная услуга',
+    '<form id="vFrm" class="frm">'+
+      '<label>Клиент<input value="'+esc(clientName(clientId))+'" disabled></label>'+
+      '<div class="g2">'+
+        '<label>Дата<input type="date" name="date" value="'+todayStr()+'" required></label>'+
+        '<label>Кол-во<input type="number" name="qty" id="vQ" value="1" min="1" required></label>'+
+      '</div>'+
+      '<label>Услуга<select name="serviceId" id="vS">'+opts+'</select></label>'+
+      '<label>Сумма<input type="number" name="sum" id="vSum" step="0.01" required></label>'+
+      '<div class="mdl-f"><button type="button" class="btn" onclick="closeMdl()">Отмена</button>'+
+      '<button class="btn pri" type="submit">Провести</button></div>'+
+    '</form>');
+
+  function sync(){
+    var sel = document.getElementById('vS');
+    var price = Number(sel.options[sel.selectedIndex].getAttribute('data-price'));
+    var qty = Number(document.getElementById('vQ').value) || 1;
+    document.getElementById('vSum').value = Math.round(price*qty);
+  }
+  document.getElementById('vS').addEventListener('change', sync);
+  document.getElementById('vQ').addEventListener('input', sync);
+  sync();
+
+  document.getElementById('vFrm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var f = new FormData(e.target);
+    var svcId = String(f.get('serviceId'));
+    var svc = serviceById(svcId);
+    var qty = Number(f.get('qty'));
+    var date = String(f.get('date'));
+    var sum = Number(f.get('sum'));
+    db.visits.push({ id:uid(), clientId:clientId, date:date, serviceId:svcId, qty:qty, price:sum/qty, sum:sum, comment:'' });
+    if(svc && svc.type==='good'){
+      for(var i=0;i<db.warehouse.length;i++){
+        if(db.warehouse[i].nomId===svcId){
+          db.warehouse[i].qty -= qty;
+          db.moves.push({ id:uid(), date:date, whId:db.warehouse[i].id, type:'out', qty:qty, comment:'Продажа' });
+          break;
+        }
+      }
+    }
+    saveDB(); closeMdl(); renderClientsAdmin();
+  });
+}
+
+/* ---- Прайс ---- */
+function renderPriceAdmin(){
+  $('#priceBody').innerHTML = db.services.length
+    ? db.services.map(function(s){
+        return '<tr>'+
+          '<td><strong>'+esc(s.name)+'</strong></td>'+
+          '<td><span class="bdg '+(s.type==='service'?'bd-bl':'bd-yl')+'">'+(s.type==='service'?'Услуга':'Товар')+'</span></td>'+
+          '<td>'+esc(s.unit)+'</td>'+
+          '<td class="num"><b>'+money(s.price)+'</b></td>'+
+          '<td class="act">'+
+            '<button class="btn sm" onclick="editService(\''+s.id+'\')">Изменить</button>'+
+            '<button class="btn sm red" onclick="delService(\''+s.id+'\')">✕</button>'+
+          '</td></tr>';
+      }).join('')
+    : '<tr><td colspan="5">'+emptyHTML('Прайс пуст — добавьте первую позицию')+'</td></tr>';
+}
+
+function editService(id){
+  var s = id ? serviceById(id) : null;
+  openMdl(s?'Редактировать позицию':'Новая позиция',
+    '<form id="sFrm" class="frm">'+
+      '<label>Наименование<input name="name" required value="'+esc(s?s.name:'')+'"></label>'+
+      '<div class="g3">'+
+        '<label>Тип<select name="type">'+
+          '<option value="service"'+(s&&s.type==='service'?' selected':'')+'>Услуга</option>'+
+          '<option value="good"'+(s&&s.type==='good'?' selected':'')+'>Товар</option>'+
+        '</select></label>'+
+        '<label>Ед.<input name="unit" value="'+esc(s?s.unit:'шт')+'"></label>'+
+        '<label>Цена<input type="number" name="price" step="0.01" min="0" required value="'+(s?s.price:'')+'"></label>'+
+      '</div>'+
+      '<div class="mdl-f"><button type="button" class="btn" onclick="closeMdl()">Отмена</button>'+
+      '<button class="btn pri" type="submit">Сохранить</button></div>'+
+    '</form>');
+
+  document.getElementById('sFrm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var f = new FormData(e.target);
+    var data = {
+      name:String(f.get('name')).trim(),
+      type:String(f.get('type')),
+      unit:String(f.get('unit')).trim() || 'шт',
+      price:Number(f.get('price'))
+    };
+    if(s){ s.name = data.name; s.type = data.type; s.unit = data.unit; s.price = data.price; }
+    else { db.services.push({ id:uid(), name:data.name, type:data.type, unit:data.unit, price:data.price }); }
+    saveDB(); closeMdl(); renderPriceAdmin(); renderPublic();
+  });
+}
+
+function delService(id){
+  if(!confirm('Удалить позицию?')) return;
+  db.services = db.services.filter(function(s){ return s.id!==id; });
+  db.warehouse = db.warehouse.filter(function(w){ return w.nomId!==id; });
+  saveDB(); renderPriceAdmin(); renderPublic();
+}
+
+/* ---- Склад ---- */
+function renderStock(){
+  $('#stockBody').innerHTML = db.warehouse.length
+    ? db.warehouse.map(function(w){
+        var low = w.qty<=w.min;
+        return '<tr>'+
+          '<td><strong>'+esc(whName(w))+'</strong></td>'+
+          '<td>'+esc(whUnit(w))+'</td>'+
+          '<td class="num"><b style="color:'+(low?'#e11d48':'inherit')+'">'+num(w.qty)+'</b></td>'+
+          '<td class="num muted">'+num(w.min)+'</td>'+
+          '<td>'+(low?'<span class="bdg bd-rd">Мало</span>':'<span class="bdg bd-gr">Норма</span>')+'</td>'+
+          '<td class="act">'+
+            '<button class="btn sm" onclick="addMove(\'in\',\''+w.id+'\')">+</button>'+
+            '<button class="btn sm" onclick="addMove(\'out\',\''+w.id+'\')">−</button>'+
+            '<button class="btn sm red" onclick="delWh(\''+w.id+'\')">✕</button>'+
+          '</td></tr>';
+      }).join('')
+    : '<tr><td colspan="6">'+emptyHTML('Склад пуст')+'</td></tr>';
+
+  var moves = db.moves.slice().sort(function(a,b){ return b.date.localeCompare(a.date); });
+  $('#movesBody').innerHTML = moves.length
+    ? moves.map(function(m){
+        var w = whById(m.whId);
+        return '<tr>'+
+          '<td>'+fmtDate(m.date)+'</td>'+
+          '<td>'+esc(whName(w))+'</td>'+
+          '<td>'+(m.type==='in'?'<span class="bdg bd-gr">Приход</span>':'<span class="bdg bd-yl">Расход</span>')+'</td>'+
+          '<td class="num"><b>'+(m.type==='in'?'+':'−')+num(m.qty)+'</b></td>'+
+          '<td class="muted">'+esc(m.comment||'')+'</td>'+
+          '<td class="act"><button class="btn sm red" onclick="delMove(\''+m.id+'\')">✕</button></td>'+
+        '</tr>';
+      }).join('')
+    : '<tr><td colspan="6">'+emptyHTML('Движений нет')+'</td></tr>';
+}
+
+function addWhItem(){
+  var avail = goods().filter(function(g){
+    return !db.warehouse.some(function(w){ return w.nomId===g.id; });
+  });
+  if(!avail.length){ alert('Нет доступных товаров. Добавьте товары в «Прайс» (тип — Товар).'); return; }
+  var opts = avail.map(function(g){ return '<option value="'+g.id+'">'+esc(g.name)+'</option>'; }).join('');
+  openMdl('Новая позиция склада',
+    '<form id="whFrm" class="frm">'+
+      '<label>Товар<select name="nomId">'+opts+'</select></label>'+
+      '<div class="g2">'+
+        '<label>Остаток<input type="number" name="qty" value="0" step="0.01"></label>'+
+        '<label>Минимум<input type="number" name="min" value="5" step="0.01"></label>'+
+      '</div>'+
+      '<div class="mdl-f"><button type="button" class="btn" onclick="closeMdl()">Отмена</button>'+
+      '<button class="btn pri" type="submit">Добавить</button></div>'+
+    '</form>');
+  document.getElementById('whFrm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var f = new FormData(e.target);
+    db.warehouse.push({ id:uid(), nomId:String(f.get('nomId')), qty:Number(f.get('qty')), min:Number(f.get('min')) });
+    saveDB(); closeMdl(); renderStock();
+  });
+}
+
+function addMove(type, whId){
+  if(!db.warehouse.length){ alert('Склад пуст'); return; }
+  var pre = whId || db.warehouse[0].id;
+  var opts = db.warehouse.map(function(w){
+    return '<option value="'+w.id+'"'+(w.id===pre?' selected':'')+'>'+esc(whName(w))+' — '+num(w.qty)+' '+esc(whUnit(w))+'</option>';
+  }).join('');
+  openMdl(type==='in'?'Приход':'Расход',
+    '<form id="mvFrm" class="frm">'+
+      '<div class="g2">'+
+        '<label>Дата<input type="date" name="date" value="'+todayStr()+'" required></label>'+
+        '<label>Тип<select name="type">'+
+          '<option value="in"'+(type==='in'?' selected':'')+'>Приход</option>'+
+          '<option value="out"'+(type==='out'?' selected':'')+'>Расход</option>'+
+        '</select></label>'+
+      '</div>'+
+      '<label>Позиция<select name="whId">'+opts+'</select></label>'+
+      '<label>Количество<input type="number" name="qty" value="1" step="0.01" min="0.01" required></label>'+
+      '<label>Комментарий<input name="comment"></label>'+
+      '<div class="mdl-f"><button type="button" class="btn" onclick="closeMdl()">Отмена</button>'+
+      '<button class="btn pri" type="submit">Провести</button></div>'+
+    '</form>');
+  document.getElementById('mvFrm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var f = new FormData(e.target);
+    var w = whById(String(f.get('whId')));
+    var qty = Number(f.get('qty'));
+    var t = String(f.get('type'));
+    if(!w) return;
+    w.qty += (t==='in' ? qty : -qty);
+    db.moves.push({ id:uid(), date:String(f.get('date')), whId:w.id, type:t, qty:qty, comment:String(f.get('comment')).trim() });
+    saveDB(); closeMdl(); renderStock();
+  });
+}
+
+function delMove(id){
+  if(!confirm('Удалить движение?')) return;
+  var m = null;
+  for(var i=0;i<db.moves.length;i++){ if(db.moves[i].id===id){ m = db.moves[i]; break; } }
+  if(m){
+    var w = whById(m.whId);
+    if(w) w.qty -= (m.type==='in' ? m.qty : -m.qty);
+  }
+  db.moves = db.moves.filter(function(x){ return x.id!==id; });
+  saveDB(); renderStock();
+}
+
+function delWh(id){
+  if(!confirm('Удалить позицию и её движения?')) return;
+  db.warehouse = db.warehouse.filter(function(w){ return w.id!==id; });
+  db.moves = db.moves.filter(function(m){ return m.whId!==id; });
+  saveDB(); renderStock();
+}
+
+/* ---- Хранение ---- */
+function nextMark(){
+  var n = db.storage.length + 1;
+  var mark = 'ХР-' + String(n).padStart(4,'0');
+  while(db.storage.some(function(s){ return s.mark===mark; })){ n++; mark = 'ХР-'+String(n).padStart(4,'0'); }
+  return mark;
+}
+
+function renderStore(){
+  $('#storeBody').innerHTML = db.storage.length
+    ? db.storage.map(function(s){
+        return '<tr>'+
+          '<td><code class="mk">'+esc(s.mark)+'</code></td>'+
+          '<td><strong>'+esc(clientName(s.clientId))+'</strong></td>'+
+          '<td>'+esc(s.setDesc)+'</td>'+
+          '<td>'+esc(s.location)+'</td>'+
+          '<td>'+esc(s.season)+'</td>'+
+          '<td>'+fmtDate(s.dateIn)+'</td>'+
+          '<td><span class="bdg '+(s.status==='Хранится'?'bd-gr':'bd-gy')+'">'+s.status+'</span></td>'+
+          '<td class="act">'+
+            (s.status==='Хранится' ? '<button class="btn sm pri" onclick="issueStore(\''+s.id+'\')">Выдать</button>' : '')+
+            '<button class="btn sm red" onclick="delStore(\''+s.id+'\')">✕</button>'+
+          '</td></tr>';
+      }).join('')
+    : '<tr><td colspan="8">'+emptyHTML('Записей нет')+'</td></tr>';
+}
+
+function addStorage(){
+  if(!db.clients.length){ alert('Сначала добавьте клиента'); return; }
+  var opts = db.clients.map(function(c){ return '<option value="'+c.id+'">'+esc(c.name)+'</option>'; }).join('');
+  openMdl('Принять на хранение',
+    '<form id="stFrm" class="frm">'+
+      '<div class="g2">'+
+        '<label>Маркировка<input name="mark" value="'+nextMark()+'" required></label>'+
+        '<label>Клиент<select name="clientId">'+opts+'</select></label>'+
+      '</div>'+
+      '<label>Состав комплекта<input name="setDesc" required placeholder="4 шт · R16 · литьё + шины"></label>'+
+      '<div class="g3">'+
+        '<label>Ячейка<input name="location" required placeholder="Стеллаж A-3"></label>'+
+        '<label>Сезон<select name="season"><option>Лето</option><option>Зима</option><option>Всесезон</option></select></label>'+
+        '<label>Дата приёма<input type="date" name="dateIn" value="'+todayStr()+'" required></label>'+
+      '</div>'+
+      '<div class="mdl-f"><button type="button" class="btn" onclick="closeMdl()">Отмена</button>'+
+      '<button class="btn pri" type="submit">Сохранить</button></div>'+
+    '</form>');
+  document.getElementById('stFrm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var f = new FormData(e.target);
+    db.storage.push({
+      id:uid(),
+      mark:String(f.get('mark')).trim(),
+      clientId:String(f.get('clientId')),
+      setDesc:String(f.get('setDesc')).trim(),
+      location:String(f.get('location')).trim(),
+      season:String(f.get('season')),
+      dateIn:String(f.get('dateIn')),
+      dateOut:'',
+      status:'Хранится',
+      note:''
+    });
+    saveDB(); closeMdl(); renderStore();
+  });
+}
+
+function issueStore(id){
+  var s = null;
+  for(var i=0;i<db.storage.length;i++){ if(db.storage[i].id===id){ s = db.storage[i]; break; } }
+  if(!s) return;
+  if(!confirm('Выдать комплект '+s.mark+'?')) return;
+  s.status = 'Выдано';
+  s.dateOut = todayStr();
+  saveDB(); renderStore();
+}
+
+function delStore(id){
+  if(!confirm('Удалить запись?')) return;
+  db.storage = db.storage.filter(function(s){ return s.id!==id; });
+  saveDB(); renderStore();
+}
+
+/* ---- Заказы ---- */
+function renderOrders(){
+  var list = db.orders.slice().sort(function(a,b){ return b.date.localeCompare(a.date); });
+  $('#ordersBody').innerHTML = list.length
+    ? list.map(function(o){
+        var items = o.items.map(function(i){
+          return esc((serviceById(i.nomId)||{name:'—'}).name)+' ×'+num(i.qty);
+        }).join('<br>');
+        var cls = o.status==='Заявка'?'bd-yl':o.status==='Выдан'?'bd-gr':'bd-bl';
+        return '<tr>'+
+          '<td>'+fmtDate(o.date)+'</td>'+
+          '<td><strong>'+esc(clientName(o.clientId))+'</strong></td>'+
+          '<td class="muted">'+(items||'—')+'</td>'+
+          '<td class="num"><b>'+money(orderSum(o))+'</b></td>'+
+          '<td><span class="bdg '+cls+'">'+o.status+'</span></td>'+
+          '<td class="act">'+
+            (o.status!=='Выдан' ? '<button class="btn sm pri" onclick="issueOrder(\''+o.id+'\')">Выдать</button>' : '')+
+            '<button class="btn sm red" onclick="delOrder(\''+o.id+'\')">✕</button>'+
+          '</td></tr>';
+      }).join('')
+    : '<tr><td colspan="6">'+emptyHTML('Заказов нет')+'</td></tr>';
+}
+
+var orderDraft = [];
+
+function addOrder(){
+  if(!db.clients.length){ alert('Добавьте клиента'); return; }
+  if(!goods().length){ alert('Нет товаров в прайсе'); return; }
+  orderDraft = [];
+  var cOpts = db.clients.map(function(c){ return '<option value="'+c.id+'">'+esc(c.name)+'</option>'; }).join('');
+  var gOpts = goods().map(function(g){ return '<option value="'+g.id+'" data-price="'+g.price+'">'+esc(g.name)+' — '+money(g.price)+'</option>'; }).join('');
+
+  openMdl('Новый заказ',
+    '<form id="oFrm" class="frm">'+
+      '<div class="g2">'+
+        '<label>Клиент<select name="clientId">'+cOpts+'</select></label>'+
+        '<label>Дата<input type="date" name="date" value="'+todayStr()+'" required></label>'+
+      '</div>'+
+      '<div class="g2">'+
+        '<label>Статус<select name="status">'+
+          '<option>Бронь</option><option>Закуплено</option><option>Выдан</option>'+
+        '</select></label>'+
+        '<label>Предоплата<input type="number" name="prepay" value="0" step="0.01"></label>'+
+      '</div>'+
+      '<div id="oiBox"></div>'+
+      '<div class="row">'+
+        '<select id="oiSel" style="flex:1">'+gOpts+'</select>'+
+        '<input type="number" id="oiQty" value="1" min="0.01" style="max-width:80px">'+
+        '<button type="button" class="btn" onclick="addOi()">+</button>'+
+      '</div>'+
+      '<div class="mdl-f"><button type="button" class="btn" onclick="closeMdl()">Отмена</button>'+
+      '<button class="btn pri" type="submit">Сохранить</button></div>'+
+    '</form>');
+  renderOiBox();
+
+  document.getElementById('oFrm').addEventListener('submit', function(e){
+    e.preventDefault();
+    if(!orderDraft.length){ alert('Добавьте позицию'); return; }
+    var f = new FormData(e.target);
+    var status = String(f.get('status'));
+    var order = {
+      id:uid(),
+      date:String(f.get('date')),
+      clientId:String(f.get('clientId')),
+      status:status,
+      prepay:Number(f.get('prepay')),
+      comment:'',
+      items: orderDraft.map(function(i){ return { nomId:i.nomId, qty:i.qty, price:i.price }; })
+    };
+    if(status==='Выдан') writeOff(order, String(f.get('date')));
+    db.orders.push(order);
+    saveDB(); closeMdl(); renderOrders();
+  });
+}
+
+function renderOiBox(){
+  var box = document.getElementById('oiBox');
+  if(!box) return;
+  box.innerHTML = orderDraft.length
+    ? '<div class="tw"><table>'+
+        '<thead><tr><th>Товар</th><th class="num">Кол</th><th class="num">Цена</th><th class="num">Сумма</th><th></th></tr></thead>'+
+        '<tbody>'+orderDraft.map(function(i,idx){
+          return '<tr><td>'+esc((serviceById(i.nomId)||{name:'—'}).name)+'</td>'+
+            '<td class="num">'+num(i.qty)+'</td><td class="num">'+money(i.price)+'</td>'+
+            '<td class="num"><b>'+money(i.qty*i.price)+'</b></td>'+
+            '<td class="act"><button type="button" class="btn sm red" onclick="rmOi('+idx+')">✕</button></td></tr>';
+        }).join('')+'</tbody></table></div>'
+    : '<div class="hint">Позиции не добавлены</div>';
+}
+
+function addOi(){
+  var sel = document.getElementById('oiSel');
+  var nomId = sel.value;
+  var price = Number(sel.options[sel.selectedIndex].getAttribute('data-price'));
+  var qty = Number(document.getElementById('oiQty').value) || 1;
+  var ex = null;
+  for(var i=0;i<orderDraft.length;i++){ if(orderDraft[i].nomId===nomId){ ex = orderDraft[i]; break; } }
+  if(ex) ex.qty += qty;
+  else orderDraft.push({ nomId:nomId, qty:qty, price:price });
+  renderOiBox();
+}
+
+function rmOi(i){ orderDraft.splice(i,1); renderOiBox(); }
+
+function writeOff(order, date){
+  order.items.forEach(function(i){
+    for(var k=0;k<db.warehouse.length;k++){
+      if(db.warehouse[k].nomId===i.nomId){
+        db.warehouse[k].qty -= i.qty;
+        db.moves.push({ id:uid(), date:date, whId:db.warehouse[k].id, type:'out', qty:i.qty, comment:'Выдача: '+clientName(order.clientId) });
+        break;
+      }
+    }
+  });
+}
+
+function issueOrder(id){
+  var o = null;
+  for(var i=0;i<db.orders.length;i++){ if(db.orders[i].id===id){ o = db.orders[i]; break; } }
+  if(!o) return;
+  if(!confirm('Оформить выдачу и списать товары?')) return;
+  o.status = 'Выдан';
+  writeOff(o, todayStr());
+  saveDB(); renderOrders(); renderDash();
+}
+
+function delOrder(id){
+  if(!confirm('Удалить заказ?')) return;
+  db.orders = db.orders.filter(function(o){ return o.id!==id; });
+  saveDB(); renderOrders(); renderReqs(); renderDash();
+}
+
+/* ---- Финансы ---- */
+function setPeriod(kind){
+  var now = new Date();
+  function iso(d){ return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10); }
+  if(kind==='month'){
+    $('#finFrom').value = iso(new Date(now.getFullYear(), now.getMonth(), 1));
+    $('#finTo').value = iso(now);
+  } else if(kind==='year'){
+    $('#finFrom').value = iso(new Date(now.getFullYear(), 0, 1));
+    $('#finTo').value = iso(now);
+  }
+  renderFin();
+}
+
+function renderFin(){
+  if(!$('#finFrom').value) setPeriod('month');
+  var from = $('#finFrom').value, to = $('#finTo').value;
+  function inP(d){ if(from && d<from) return false; if(to && d>to) return false; return true; }
+
+  var visits = db.visits.filter(function(v){ return inP(v.date); });
+  var orders = db.orders.filter(function(o){ return o.status==='Выдан' && inP(o.date); });
+  var exps = db.expenses.filter(function(e){ return inP(e.date); })
+    .sort(function(a,b){ return b.date.localeCompare(a.date); });
+
+  var revS = visits.filter(function(v){ var s = serviceById(v.serviceId); return s && s.type==='service'; })
+    .reduce(function(a,v){ return a+v.sum; },0);
+  var revG = visits.filter(function(v){ var s = serviceById(v.serviceId); return s && s.type==='good'; })
+    .reduce(function(a,v){ return a+v.sum; },0)
+    + orders.reduce(function(a,o){ return a+orderSum(o); },0);
+  var revT = revS + revG;
+  var expT = exps.reduce(function(a,e){ return a+e.sum; },0);
+  var profit = revT - expT;
+
+  $('#finKpis').innerHTML =
+    '<div class="kpi gr"><div class="lbl">Выручка</div><div class="val">'+money(revT)+'</div></div>'+
+    '<div class="kpi rd"><div class="lbl">Расходы</div><div class="val">'+money(expT)+'</div></div>'+
+    '<div class="kpi '+(profit>=0?'gr':'rd')+'"><div class="lbl">Итог</div><div class="val">'+money(profit)+'</div></div>'+
+    '<div class="kpi bl"><div class="lbl">Средний чек</div><div class="val">'+money(visits.length ? revT/visits.length : 0)+'</div></div>';
+
+  $('#finExpBody').innerHTML = exps.length
+    ? exps.map(function(e){
+        return '<tr>'+
+          '<td>'+fmtDate(e.date)+'</td>'+
+          '<td><span class="bdg bd-gy">'+esc(e.category)+'</span></td>'+
+          '<td class="muted">'+esc(e.comment||'')+'</td>'+
+          '<td class="num"><b style="color:#e11d48">−'+money(e.sum)+'</b></td>'+
+          '<td class="act"><button class="btn sm red" onclick="delExpense(\''+e.id+'\')">✕</button></td>'+
+        '</tr>';
+      }).join('')
+    : '<tr><td colspan="5">'+emptyHTML('Расходов нет')+'</td></tr>';
+
+  var revList = [];
+  visits.forEach(function(v){
+    var s = serviceById(v.serviceId);
+    revList.push({
+      date:v.date,
+      src: s && s.type==='good' ? 'Товар' : 'Услуга',
+      client: clientName(v.clientId),
+      desc: s ? s.name : '—',
+      sum: v.sum
+    });
+  });
+  orders.forEach(function(o){
+    revList.push({
+      date:o.date, src:'Заказ',
+      client: clientName(o.clientId),
+      desc: o.items.map(function(i){ var s = serviceById(i.nomId); return s ? s.name : ''; }).join(', '),
+      sum: orderSum(o)
+    });
+  });
+  revList.sort(function(a,b){ return b.date.localeCompare(a.date); });
+
+  $('#finRevBody').innerHTML = revList.length
+    ? revList.map(function(r){
+        var cls = r.src==='Услуга'?'bd-bl':r.src==='Товар'?'bd-yl':'bd-gr';
+        return '<tr>'+
+          '<td>'+fmtDate(r.date)+'</td>'+
+          '<td><span class="bdg '+cls+'">'+r.src+'</span></td>'+
+          '<td>'+esc(r.client)+'</td>'+
+          '<td class="muted">'+esc(r.desc)+'</td>'+
+          '<td class="num"><b style="color:#16a34a">+'+money(r.sum)+'</b></td>'+
+        '</tr>';
+      }).join('')
+    : '<tr><td colspan="5">'+emptyHTML('Операций нет')+'</td></tr>';
+}
+$('#finFrom').addEventListener('change', renderFin);
+$('#finTo').addEventListener('change', renderFin);
+
+function addExpense(){
+  openMdl('Новый расход',
+    '<form id="exFrm" class="frm">'+
+      '<div class="g2">'+
+        '<label>Дата<input type="date" name="date" value="'+todayStr()+'" required></label>'+
+        '<label>Категория<select name="category">'+
+          '<option>Зарплата</option><option>Налоги</option><option>Аренда</option>'+
+          '<option>Закупка товара</option><option>Коммунальные</option><option>Реклама</option>'+
+          '<option>Оборудование</option><option>Прочее</option>'+
+        '</select></label>'+
+      '</div>'+
+      '<label>Сумма<input type="number" name="sum" step="0.01" min="0.01" required></label>'+
+      '<label>Комментарий<textarea name="comment" rows="2"></textarea></label>'+
+      '<div class="mdl-f"><button type="button" class="btn" onclick="closeMdl()">Отмена</button>'+
+      '<button class="btn pri" type="submit">Добавить</button></div>'+
+    '</form>');
+  document.getElementById('exFrm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var f = new FormData(e.target);
+    db.expenses.push({
+      id:uid(),
+      date:String(f.get('date')),
+      category:String(f.get('category')),
+      sum:Number(f.get('sum')),
+      comment:String(f.get('comment')).trim()
+    });
+    saveDB(); closeMdl(); renderFin();
+  });
+}
+
+function delExpense(id){
+  if(!confirm('Удалить расход?')) return;
+  db.expenses = db.expenses.filter(function(e){ return e.id!==id; });
+  saveDB(); renderFin();
+}
+
+/* ---- Учётные записи ---- */
+function renderUsers(){
+  $('#usersBody').innerHTML = db.users.map(function(u){
+    return '<tr>'+
+      '<td><code class="mk">'+esc(u.login)+'</code></td>'+
+      '<td>'+(u.role==='admin'?'<span class="bdg bd-rd">Админ</span>':'<span class="bdg bd-bl">Клиент</span>')+'</td>'+
+      '<td>'+(u.clientId ? esc(clientName(u.clientId)) : '<span class="muted">—</span>')+'</td>'+
+      '<td class="act">'+
+        '<button class="btn sm" onclick="changePass(\''+u.id+'\')">Пароль</button>'+
+        (u.login!=='admin' ? '<button class="btn sm red" onclick="delUser(\''+u.id+'\')">✕</button>' : '')+
+      '</td></tr>';
+  }).join('');
+}
+
+function addUser(){
+  var cOpts = '<option value="">— не привязан —</option>' +
+    db.clients.map(function(c){ return '<option value="'+c.id+'">'+esc(c.name)+'</option>'; }).join('');
+  openMdl('Новая учётка',
+    '<form id="uFrm" class="frm">'+
+      '<div class="g2">'+
+        '<label>Логин<input name="login" required></label>'+
+        '<label>Пароль<input name="password" required></label>'+
+      '</div>'+
+      '<label>Роль<select name="role">'+
+        '<option value="admin">Админ</option>'+
+        '<option value="client">Клиент</option>'+
+      '</select></label>'+
+      '<label>Клиент (для роли Клиент)<select name="clientId">'+cOpts+'</select></label>'+
+      '<div class="mdl-f"><button type="button" class="btn" onclick="closeMdl()">Отмена</button>'+
+      '<button class="btn pri" type="submit">Создать</button></div>'+
+    '</form>');
+  document.getElementById('uFrm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var f = new FormData(e.target);
+    var login = String(f.get('login')).trim();
+    if(db.users.filter(function(u){ return u.login===login; }).length){ alert('Логин занят'); return; }
+    db.users.push({
+      id:uid(),
+      login:login,
+      password:hashPass(String(f.get('password'))),
+      role:String(f.get('role')),
+      clientId:String(f.get('clientId')) || null
+    });
+    saveDB(); closeMdl(); renderUsers();
+  });
+}
+
+function changePass(id){
+  openMdl('Смена пароля',
+    '<form id="pFrm" class="frm">'+
+      '<label>Новый пароль<input name="password" required></label>'+
+      '<div class="mdl-f"><button type="button" class="btn" onclick="closeMdl()">Отмена</button>'+
+      '<button class="btn pri" type="submit">Сохранить</button></div>'+
+    '</form>');
+  document.getElementById('pFrm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var f = new FormData(e.target);
+    for(var i=0;i<db.users.length;i++){
+      if(db.users[i].id===id){ db.users[i].password = hashPass(String(f.get('password'))); break; }
+    }
+    saveDB(); closeMdl();
+  });
+}
+
+function delUser(id){
+  if(!confirm('Удалить учётку?')) return;
+  db.users = db.users.filter(function(u){ return u.id!==id; });
+  saveDB(); renderUsers();
+}
+
+/* =====================================================================
+   СТАРТ
+   ===================================================================== */
 loadDB();
-renderUserBox();
-renderPublic();
+switchClient('home');
+setMode('client');
 </script>
 </body>
 </html>
